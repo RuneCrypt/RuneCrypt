@@ -22,44 +22,43 @@ import java.util.Date;
 
 /**
  * An {@link PrintStream} that is used to format the PrintStream.
- * 
- * @author Thomas Le Godais <thomaslegodais@live.com>
  *
+ * @author Thomas Le Godais <thomaslegodais@live.com>
  */
 public class ConsoleLogger extends PrintStream {
 
-	/** 
-	 * The simple date format.
-	 */
-	private SimpleDateFormat simpleDate;
+    /**
+     * The simple date format.
+     */
+    private SimpleDateFormat simpleDate;
 
-	/**
-	 * Constructs the ConsoleLogger.
-	 * 
-	 * @param stream The logger stream.
-	 */
-	public ConsoleLogger(PrintStream stream) {
-		super(stream);
-	}
+    /**
+     * Constructs the ConsoleLogger.
+     *
+     * @param stream The logger stream.
+     */
+    public ConsoleLogger(PrintStream stream) {
+        super(stream);
+    }
 
-	/* (non-Javadoc)
-	 * 
-	 * @see java.io.PrintStream#println(java.lang.String)
-	 */
-	@Override
-	public void println(String message) {
-		String date = "["+format(new Date())+"]: ";
-		super.println(date + message);
-	}
+    /* (non-Javadoc)
+     *
+     * @see java.io.PrintStream#println(java.lang.String)
+     */
+    @Override
+    public void println(String message) {
+        String date = "[" + format(new Date()) + "]: ";
+        super.println(date + message);
+    }
 
-	/**
-	 * Formats the requested date.
-	 * 
-	 * @param date The date.
-	 * @return The formatted date.
-	 */
-	private String format(Date date) {
-		simpleDate = new SimpleDateFormat();
-		return simpleDate.format(date);
-	}
+    /**
+     * Formats the requested date.
+     *
+     * @param date The date.
+     * @return The formatted date.
+     */
+    private String format(Date date) {
+        simpleDate = new SimpleDateFormat();
+        return simpleDate.format(date);
+    }
 }

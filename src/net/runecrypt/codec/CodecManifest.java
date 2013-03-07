@@ -24,21 +24,22 @@ import java.lang.annotation.RetentionPolicy;
  *
  * @author Thomas Le Godais <thomaslegodais@live.com>
  * @author James Barton <sirjames1996@hotmail.com>
- * 
  * @since 1.0 <3:54:22 PM - Mar 4, 2013>
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CodecManifest {
-	
-	/**
-	 * The required protocol for the codec.
-	 * @return The required protocol.
-	 */
-	int requiredProtocol();
 
-	/**
-	 * The authors of the codec.
-	 * @return The authors.
-	 */
-	String[] authors();
+    /**
+     * The required protocol for the codec.
+     *
+     * @return The required protocol.
+     */
+    int requiredProtocol();
+
+    /**
+     * The authors of the codec.
+     *
+     * @return The authors.
+     */
+    String[] authors();
 }

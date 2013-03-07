@@ -21,51 +21,54 @@ package net.runecrypt;
  * come in handy later, when we're handling networking tasks (because this will
  * be used with the networking pool) and we're going to store the cache instance
  * here for the ondemand procedure.
- * 
+ *
  * @author Thomas Le Godais <thomaslegodais@live.com>
  * @author James Barton <sirjames1996@hotmail.com>
- * 
  * @since 1.0 <5:08:14 PM - Mar 3, 2013>
  */
 public class ServerContext {
 
-	private String serverAddress;
-	private int serverPort;
-	private boolean isVerboseMode;
-	
-	/**
-	 * Constructs a new {@code ServerContext} instance.
-	 * @param serverAddress The address host the server is on.
-	 * @param serverPort The server port that matches along with the address.
-	 * @param isVerboseMode A flag used to indicate if the server is running in verbose mode.
-	 */
-	public ServerContext(String serverAddress, int serverPort, boolean isVerboseMode) {
-		this.serverAddress = serverAddress;
-		this.serverPort = serverPort;
-		this.isVerboseMode = isVerboseMode;
-	}
+    private String serverAddress;
+    private int serverPort;
+    private boolean isVerboseMode;
 
-	/**
-	 * Gets the current address the server is on.
-	 * @return the server address.
-	 */
-	public String getServerAddress() {
-		return serverAddress;
-	}
+    /**
+     * Constructs a new {@code ServerContext} instance.
+     *
+     * @param serverAddress The address host the server is on.
+     * @param serverPort    The server port that matches along with the address.
+     * @param isVerboseMode A flag used to indicate if the server is running in verbose mode.
+     */
+    public ServerContext(String serverAddress, int serverPort, boolean isVerboseMode) {
+        this.serverAddress = serverAddress;
+        this.serverPort = serverPort;
+        this.isVerboseMode = isVerboseMode;
+    }
 
-	/**
-	 * The port the server is currently running on.
-	 * @return The server port.
-	 */
-	public int getServerPort() {
-		return serverPort;
-	}
+    /**
+     * Gets the current address the server is on.
+     *
+     * @return the server address.
+     */
+    public String getServerAddress() {
+        return serverAddress;
+    }
 
-	/**
-	 * A flag that is used to indicate if the server is running on verbose mode.
-	 * @return The flag value.
-	 */
-	public boolean isVerboseMode() {
-		return isVerboseMode;
-	}
+    /**
+     * The port the server is currently running on.
+     *
+     * @return The server port.
+     */
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    /**
+     * A flag that is used to indicate if the server is running on verbose mode.
+     *
+     * @return The flag value.
+     */
+    public boolean isVerboseMode() {
+        return isVerboseMode;
+    }
 }

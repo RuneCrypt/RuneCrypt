@@ -26,17 +26,16 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
  *
  * @author Thomas Le Godais <thomaslegodais@live.com>
  * @author James Barton <sirjames1996@hotmail.com>
- * 
  * @since 1.0 <4:47:39 PM - Mar 4, 2013>
  */
 public class HandshakeDecoder extends FrameDecoder {
 
-	/* (non-Javadoc)
-	 * @see org.jboss.netty.handler.codec.frame.FrameDecoder#decode(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.Channel, org.jboss.netty.buffer.ChannelBuffer)
-	 */
-	@Override
-	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
-		System.out.println("Incomming handshake opcode: " + buffer.readByte());
-		return null;
-	}
+    /* (non-Javadoc)
+     * @see org.jboss.netty.handler.codec.frame.FrameDecoder#decode(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.Channel, org.jboss.netty.buffer.ChannelBuffer)
+     */
+    @Override
+    protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
+        System.out.println("Incomming handshake opcode: " + buffer.readByte());
+        return null;
+    }
 }
