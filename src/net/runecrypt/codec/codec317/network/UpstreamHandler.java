@@ -16,6 +16,10 @@
 */
 package net.runecrypt.codec.codec317.network;
 
+import net.runecrypt.codec.Codec;
+import net.runecrypt.codec.messages.HandshakeType;
+import net.runecrypt.codec.session.Session;
+import net.runecrypt.codec.session.impl.LoginSession;
 import org.jboss.netty.channel.*;
 
 /**
@@ -28,13 +32,32 @@ import org.jboss.netty.channel.*;
  */
 public class UpstreamHandler extends SimpleChannelUpstreamHandler {
 
+    private final Codec codec;
+
+    /**
+     * Constructs a new UpstreamHandler instance.
+     *
+     * @param codec The codec for the handler.
+     */
+    public UpstreamHandler(Codec codec) {
+        this.codec = codec;
+    }
+
     /*
      * (non-Javadoc)
      * @see org.jboss.netty.channel.SimpleChannelUpstreamHandler#messageReceived(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.MessageEvent)
      */
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-
+        if (ctx.getAttachment() == null) {
+            HandshakeType handshakeType = (HandshakeType)e.getMessage();
+            switch (handshakeType.getType()) {
+                case HANDSHAKE_LOGIN:
+                    ctx.setAttachment(new LoginSession(ctx, codec));
+                    break;
+            }
+        } else
+            ((Session) ctx.getAttachment()).message(e.getMessage());
     }
 
     /*
@@ -54,6 +77,10 @@ public class UpstreamHandler extends SimpleChannelUpstreamHandler {
      */
     @Override
     public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
+        Channel channel = ctx.getChannel();
+        if (channel.isConnected()) channel.close();
 
+        Session session = (Session)ctx.getAttachment();
+        if (session != null) session.disconnected();
     }
 }

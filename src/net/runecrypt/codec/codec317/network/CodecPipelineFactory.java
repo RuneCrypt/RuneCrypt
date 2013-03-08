@@ -16,6 +16,8 @@
 */
 package net.runecrypt.codec.codec317.network;
 
+import net.runecrypt.codec.Codec;
+import net.runecrypt.codec.CodecManifest;
 import net.runecrypt.codec.codec317.network.codec.handshake.HandshakeDecoder;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -30,14 +32,28 @@ import org.jboss.netty.channel.Channels;
  */
 public class CodecPipelineFactory implements ChannelPipelineFactory {
 
+    private final CodecManifest codecManifest;
+    private final Codec codec;
+
+    /**
+     * Constructs a new {@code CodecPipelineFactory} instance.
+     *
+     * @param codec The codec of the server.
+     * @param codecManifest The manifest for the codec.
+     */
+    public CodecPipelineFactory(Codec codec, CodecManifest codecManifest) {
+        this.codec = codec;
+        this.codecManifest = codecManifest;
+    }
+
     /* (non-Javadoc)
      * @see org.jboss.netty.channel.ChannelPipelineFactory#getPipeline()
      */
     @Override
     public ChannelPipeline getPipeline() throws Exception {
         ChannelPipeline pipeline = Channels.pipeline();
-        pipeline.addLast("decoder", new HandshakeDecoder());
-        pipeline.addLast("upHandler", new UpstreamHandler());
+        pipeline.addLast("decoder", new HandshakeDecoder(codecManifest));
+        pipeline.addLast("upHandler", new UpstreamHandler(codec));
         return pipeline;
     }
 }

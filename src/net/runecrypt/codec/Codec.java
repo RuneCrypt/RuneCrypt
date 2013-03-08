@@ -18,6 +18,8 @@ package net.runecrypt.codec;
 
 import net.runecrypt.Server;
 import net.runecrypt.codec.codec317.Codec317;
+import net.runecrypt.codec.codec317.network.CodecPipelineFactory;
+import org.jboss.netty.channel.ChannelPipelineFactory;
 
 /**
  * Represents a single protocol codec that the server can handle, for example we
@@ -79,6 +81,22 @@ public abstract class Codec {
     }
 
     /**
+     * Gets the Pipeline Factory based on the revision.
+     *
+     * @param revision      The revision we're getting.
+     * @param codec         The codec of the revision.
+     * @param codecManifest The manifest for the codec.
+     * @return The pipeline factory for the codec.
+     */
+    public static ChannelPipelineFactory pipelineFactoryForRevision(int revision, Codec codec, CodecManifest codecManifest) {
+        switch (revision) {
+            case 317:
+                return new CodecPipelineFactory(codec, codecManifest);
+        }
+        throw new IllegalStateException("No such pipeline for revision: " + revision);
+    }
+
+    /**
      * Gets the server instance.
      *
      * @return the server
@@ -86,4 +104,6 @@ public abstract class Codec {
     public Server getServer() {
         return server;
     }
+
+
 }

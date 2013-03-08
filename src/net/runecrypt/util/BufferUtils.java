@@ -79,7 +79,7 @@ public final class BufferUtils {
     public static String readString(ChannelBuffer buf) {
         StringBuilder bldr = new StringBuilder();
         byte b;
-        while(buf.readable() && (b = buf.readByte()) != 0) {
+        while(buf.readable() && (b = buf.readByte()) != 10) {
             bldr.append((char) b);
         }
         return bldr.toString();

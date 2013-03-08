@@ -16,10 +16,17 @@
 */
 package net.runecrypt.codec.codec317.network.codec.handshake;
 
+import net.runecrypt.codec.CodecManifest;
+import net.runecrypt.codec.codec317.network.codec.login.LoginDecoder;
+import net.runecrypt.codec.codec317.network.codec.login.LoginEncoder;
+import net.runecrypt.codec.messages.HandshakeType;
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An {@link FrameDecoder} that is used to handle the handshake procedure.
@@ -30,12 +37,29 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
  */
 public class HandshakeDecoder extends FrameDecoder {
 
+    private final CodecManifest codecManifest;
+
+    /**
+     * Constructs a {@code HandshakeDecoder} instance.
+     */
+    public HandshakeDecoder(CodecManifest codecManifest) {
+        super(true);
+        this.codecManifest = codecManifest;
+    }
+
     /* (non-Javadoc)
      * @see org.jboss.netty.handler.codec.frame.FrameDecoder#decode(org.jboss.netty.channel.ChannelHandlerContext, org.jboss.netty.channel.Channel, org.jboss.netty.buffer.ChannelBuffer)
      */
     @Override
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
-        System.out.println("Incomming handshake opcode: " + buffer.readByte());
-        return null;
+        HandshakeType handshakeType = new HandshakeType(0xFF & buffer.readByte());
+        switch (handshakeType.getType()) {
+            case HANDSHAKE_LOGIN:
+                channel.getPipeline().addFirst("loginEncoder", new LoginEncoder());
+                channel.getPipeline().addBefore("upHandler", "loginDecoder", new LoginDecoder(codecManifest));
+                break;
+        }
+        channel.getPipeline().remove(HandshakeDecoder.class);
+        return buffer.readable() ? new Object[] { handshakeType, buffer.readBytes(buffer.readableBytes()) } : handshakeType;
     }
 }

@@ -1,9 +1,10 @@
 package net.runecrypt.network.packet;
 
+import net.runecrypt.game.model.player.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sean.game.model.player.Player;
 /**
  * @author Sean
  */

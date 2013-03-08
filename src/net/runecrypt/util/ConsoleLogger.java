@@ -30,7 +30,7 @@ public class ConsoleLogger extends PrintStream {
     /**
      * The simple date format.
      */
-    private SimpleDateFormat simpleDate;
+    private SimpleDateFormat simpleDate = new SimpleDateFormat();
 
     /**
      * Constructs the ConsoleLogger.
@@ -51,6 +51,12 @@ public class ConsoleLogger extends PrintStream {
         super.println(date + message);
     }
 
+    @Override
+    public PrintStream printf(String message, Object... args) {
+        String date = "[" + format(new Date()) + "]: ";
+        return super.printf(date + message, args);
+    }
+
     /**
      * Formats the requested date.
      *
@@ -58,7 +64,6 @@ public class ConsoleLogger extends PrintStream {
      * @return The formatted date.
      */
     private String format(Date date) {
-        simpleDate = new SimpleDateFormat();
         return simpleDate.format(date);
     }
 }

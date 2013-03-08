@@ -116,7 +116,7 @@ public class Server {
             ServerBootstrap bootstrap = new ServerBootstrap();
 
             bootstrap.setFactory(new NioServerSocketChannelFactory());
-            bootstrap.setPipelineFactory((ChannelPipelineFactory) Class.forName("net.runecrypt.codec.codec" + revision + ".network.CodecPipelineFactory").newInstance());
+            bootstrap.setPipelineFactory(codec.pipelineFactoryForRevision(revision, codec, manifest));
             bootstrap.setOption("localAddress", new InetSocketAddress(serverContext.getServerAddress(), serverContext.getServerPort()));
 
             bootstrap.bindAsync();
