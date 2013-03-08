@@ -1,8 +1,15 @@
 package net.runecrypt.codec.codec751;
 
+import net.runecrypt.GameEngine;
 import net.runecrypt.Server;
 import net.runecrypt.codec.Codec;
 import net.runecrypt.codec.CodecManifest;
+import net.runecrypt.codec.codec751.decoders.WorldListDecoder;
+import net.runecrypt.codec.codec751.encoders.Config;
+import net.runecrypt.codec.codec751.encoders.KeepAlive;
+import net.runecrypt.codec.codec751.encoders.WorldList;
+import net.runecrypt.codec.codec751.handlers.KeepAliveHandler;
+import net.runecrypt.codec.codec751.handlers.WorldListHandler;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +21,7 @@ import net.runecrypt.codec.CodecManifest;
 @CodecManifest(requiredProtocol = 751, authors = {"Thomas Le Godais"})
 public class Codec751 extends Codec {
 
-    private int[] PACKET_LENGTHS;
+    private int[] PACKET_LENGTHS = new int[256];
 
     /**
      * Constructs a new {@code Codec751} instance.
@@ -27,8 +34,6 @@ public class Codec751 extends Codec {
 
     @Override
     public void setPacketLengths() {
-        for (int i = 0; i < PACKET_LENGTHS.length; i++)
-            PACKET_LENGTHS[i] = -3;
         PACKET_LENGTHS[84] = 6;
         PACKET_LENGTHS[70] = -1;
         PACKET_LENGTHS[2] = -1;
@@ -145,12 +150,23 @@ public class Codec751 extends Codec {
 
     @Override
     public void setOutgoingPackets() {
-
+        try {
+            GameEngine.getInstance().getPacketCodec().register(Config.class);
+            GameEngine.getInstance().getPacketCodec().register(WorldList.class);
+            GameEngine.getInstance().getPacketCodec().register(KeepAlive.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void setIncommingPackets() {
-
+        try {
+            GameEngine.getInstance().getPacketCodec().register(103, new WorldListDecoder(), new WorldListHandler());
+            GameEngine.getInstance().getPacketCodec().register(9, new KeepAliveHandler());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

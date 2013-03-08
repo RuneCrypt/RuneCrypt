@@ -89,12 +89,12 @@ public final class CompressionUtils {
      * @throws IOException if an I/O error occurs.
      */
     public static byte[] gunzip(byte[] bytes) throws IOException {
-		/* create the streams */
+        /* create the streams */
         InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes));
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             try {
-				/* copy data between the streams */
+                /* copy data between the streams */
                 byte[] buf = new byte[4096];
                 int len = 0;
                 while ((len = is.read(buf, 0, buf.length)) != -1) {

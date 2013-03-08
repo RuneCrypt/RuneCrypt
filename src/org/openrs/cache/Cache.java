@@ -59,7 +59,7 @@ public final class Cache implements Closeable {
             byte[] whirlpool = new byte[64];
 
 			/* 
-			 * if there is actually a reference table, calculate the CRC,
+             * if there is actually a reference table, calculate the CRC,
 			 * version and whirlpool hash
 			 */
             if (buf.limit() > 0) { // some indices are not used, is this appropriate?
@@ -116,7 +116,7 @@ public final class Cache implements Closeable {
      * @throws IOException if an I/O error occurred.
      */
     public Container read(int type, int file) throws IOException {
-		/* we don't want people reading/manipulating these manually */
+        /* we don't want people reading/manipulating these manually */
         if (type == 255)
             throw new IOException("Reference tables can only be read with the low level FileStore API!");
 

@@ -45,7 +45,7 @@ public final class Container {
 
 		/* check if we should decompress the data or not */
         if (type == COMPRESSION_NONE) {
-			/* simply grab the data and wrap it in a buffer */
+            /* simply grab the data and wrap it in a buffer */
             byte[] temp = new byte[length];
             buffer.get(temp);
             ByteBuffer data = ByteBuffer.wrap(temp);
@@ -59,7 +59,7 @@ public final class Container {
 			/* and return the decoded container */
             return new Container(type, data, version);
         } else {
-			/* grab the length of the uncompressed data */
+            /* grab the length of the uncompressed data */
             int uncompressedLength = buffer.getInt();
 
 			/* grab the data */

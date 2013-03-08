@@ -36,7 +36,7 @@ public class Archive {
         for (int chunk = 0; chunk < chunks; chunk++) {
             int chunkSize = 0;
             for (int id = 0; id < size; id++) {
-				/* read the delta-encoded chunk length */
+                /* read the delta-encoded chunk length */
                 int delta = buffer.getInt();
                 chunkSize += delta;
 
@@ -54,7 +54,7 @@ public class Archive {
         buffer.position(0);
         for (int chunk = 0; chunk < chunks; chunk++) {
             for (int id = 0; id < size; id++) {
-				/* get the length of this chunk */
+                /* get the length of this chunk */
                 int chunkSize = chunkSizes[chunk][id];
 
 				/* copy this chunk into a temporary buffer */

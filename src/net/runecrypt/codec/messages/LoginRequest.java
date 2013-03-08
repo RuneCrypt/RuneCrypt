@@ -2,6 +2,7 @@ package net.runecrypt.codec.messages;
 
 import net.burtleburtle.bob.rand.IsaacRandom;
 import net.runecrypt.codec.CodecManifest;
+import net.runecrypt.game.World.LoginType;
 import net.runecrypt.game.model.player.PlayerDef;
 
 /**
@@ -16,6 +17,7 @@ public class LoginRequest {
     private final PlayerDef playerDef;
     private final IsaacRandom decodingRandom, encodingRandom;
     private final CodecManifest codecManifest;
+    private LoginType loginType;
 
     /**
      * Constructs a new {@code LoginRequest} instance.
@@ -23,12 +25,14 @@ public class LoginRequest {
      * @param playerDef      The definition of the player.
      * @param decodingRandom The random number generator for decoding packets.
      * @param encodingRandom The random number generator for encoding packets.
+     * @param loginType      The login type we're performing for (World, Lobby).
      */
-    public LoginRequest(PlayerDef playerDef, IsaacRandom decodingRandom, IsaacRandom encodingRandom, CodecManifest codecManifest) {
+    public LoginRequest(PlayerDef playerDef, IsaacRandom decodingRandom, IsaacRandom encodingRandom, CodecManifest codecManifest, LoginType loginType) {
         this.playerDef = playerDef;
         this.decodingRandom = decodingRandom;
         this.encodingRandom = encodingRandom;
         this.codecManifest = codecManifest;
+        this.loginType = loginType;
     }
 
     /**
@@ -65,5 +69,14 @@ public class LoginRequest {
      */
     public CodecManifest getCodecManifest() {
         return codecManifest;
+    }
+
+    /**
+     * Gets the current login type for the request.
+     *
+     * @return The login type.
+     */
+    public LoginType getLoginType() {
+        return loginType;
     }
 }

@@ -3,6 +3,7 @@ package net.runecrypt.codec.codec317.network.codec.login;
 import net.burtleburtle.bob.rand.IsaacRandom;
 import net.runecrypt.codec.CodecManifest;
 import net.runecrypt.codec.messages.LoginRequest;
+import net.runecrypt.game.World.LoginType;
 import net.runecrypt.game.model.player.PlayerDef;
 import net.runecrypt.util.BufferUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -118,7 +119,7 @@ public class LoginDecoder extends FrameDecoder {
             rights = PlayerDef.Rights.ADMINISTRATOR;
         PlayerDef playerDef = new PlayerDef(username, password, rights);
 
-        LoginRequest loginRequest = new LoginRequest(playerDef, decodingRandom, encodingRandom, codecManifest);
+        LoginRequest loginRequest = new LoginRequest(playerDef, decodingRandom, encodingRandom, codecManifest, LoginType.WORLD);
         return buffer.readable() ? new Object[]{loginRequest, buffer.readBytes(buffer.readableBytes())} : loginRequest;
     }
 

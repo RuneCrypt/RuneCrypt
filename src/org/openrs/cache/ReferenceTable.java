@@ -297,7 +297,7 @@ public class ReferenceTable {
 
 		/* read the child ids */
         for (int id : ids) {
-			/* reset the accumulator and size */
+            /* reset the accumulator and size */
             accumulator = 0;
             size = -1;
 
@@ -385,7 +385,7 @@ public class ReferenceTable {
      * @throws IOException if an I/O error occurs.
      */
     public ByteBuffer encode() throws IOException {
-		/* 
+        /*
 		 * we can't (easily) predict the size ahead of time, so we write to a
 		 * stream and then to the buffer
 		 */

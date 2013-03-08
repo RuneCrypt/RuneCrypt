@@ -158,6 +158,11 @@ public class Server {
 
         String[] authors = manifest.authors();
         String author = Arrays.toString(authors);
+
+        codec.setIncommingPackets();
+        codec.setOutgoingPackets();
+        codec.setPacketLengths();
+
         System.out.println("Successfully bootstrapped [revision=" + manifest.requiredProtocol() + ", authors=" + author + "]");
     }
 

@@ -223,7 +223,7 @@ public class ChecksumTable {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream os = new DataOutputStream(bout);
         try {
-			/* as the new whirlpool format is more complicated we must write the number of entries */
+            /* as the new whirlpool format is more complicated we must write the number of entries */
             if (whirlpool)
                 os.write(entries.length);
 

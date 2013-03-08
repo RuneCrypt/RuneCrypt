@@ -90,4 +90,35 @@ public final class BufferUtils {
         }
         return bldr.toString();
     }
+
+    /**
+     * Reads a RuneScape string from a buffer.
+     *
+     * @param buf The buffer.
+     * @return The string.
+     */
+    public static String readJagexString(ChannelBuffer buf) {
+        StringBuilder bldr = new StringBuilder();
+        byte b;
+        while (buf.readable() && (b = buf.readByte()) != 0) {
+            bldr.append((char) b);
+        }
+        return bldr.toString();
+    }
+
+    public static void write40BitInt(ChannelBuffer buffer, long value) {
+        buffer.writeByte((byte) (value >> 32));
+        buffer.writeByte((byte) (value >> 24));
+        buffer.writeByte((byte) (value >> 16));
+        buffer.writeByte((byte) (value >> 8));
+        buffer.writeByte((byte) (value));
+    }
+
+    public static void writeGJString2(ChannelBuffer buffer, String gjString) {
+        byte[] packed = new byte[JagString.calculateGJString2Length(gjString)];
+        int length = JagString.packGJString2(0, packed, gjString);
+        buffer.writeByte(0);
+        buffer.writeBytes(packed, 0, length);
+        buffer.writeByte(0);
+    }
 }

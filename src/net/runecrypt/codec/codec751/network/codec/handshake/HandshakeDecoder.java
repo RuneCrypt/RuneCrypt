@@ -17,11 +17,14 @@
 package net.runecrypt.codec.codec751.network.codec.handshake;
 
 import net.runecrypt.codec.CodecManifest;
+import net.runecrypt.codec.codec751.network.codec.login.LoginDecoder;
+import net.runecrypt.codec.codec751.network.codec.login.LoginEncoder;
 import net.runecrypt.codec.codec751.network.codec.ondemand.UpdateDecoder;
 import net.runecrypt.codec.codec751.network.codec.ondemand.UpdateEncoder;
 import net.runecrypt.codec.codec751.network.codec.ondemand.XorEncoder;
 import net.runecrypt.codec.messages.HandshakeType;
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
@@ -53,6 +56,11 @@ public class HandshakeDecoder extends FrameDecoder {
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
         HandshakeType handshakeType = new HandshakeType(0xFF & buffer.readByte());
         switch (handshakeType.getType()) {
+            case HANDSHAKE_LOGIN:
+                channel.write(validateResponse());
+                channel.getPipeline().addLast("loginEncoder", new LoginEncoder());
+                channel.getPipeline().addBefore("upHandler", "loginDecoder", new LoginDecoder(codecManifest));
+                break;
             case HANDSHAKE_ONDEMAND:
                 channel.getPipeline().addFirst("encoder", new UpdateEncoder());
                 channel.getPipeline().addFirst("xor-encoder", new XorEncoder());
@@ -63,5 +71,14 @@ public class HandshakeDecoder extends FrameDecoder {
         }
         channel.getPipeline().remove(HandshakeDecoder.class);
         return buffer.readable() ? new Object[]{handshakeType, buffer.readBytes(buffer.readableBytes())} : handshakeType;
+    }
+
+    /**
+     * Validates the login response.
+     */
+    private ChannelBuffer validateResponse() {
+        ChannelBuffer channelBuffer = ChannelBuffers.buffer(1);
+        channelBuffer.writeByte(0);
+        return channelBuffer;
     }
 }

@@ -83,7 +83,7 @@ public final class Sprite {
 		/* read the pixels themselves */
         buffer.position(0);
         for (int id = 0; id < size; id++) {
-			/* grab some frequently used values */
+            /* grab some frequently used values */
             int subWidth = subWidths[id], subHeight = subHeights[id];
             int offsetX = offsetsX[id], offsetY = offsetsY[id];
 
@@ -98,7 +98,7 @@ public final class Sprite {
 
 			/* now read the image */
             if (image != null) {
-				/* read the palette indices */
+                /* read the palette indices */
                 if ((flags & FLAG_VERTICAL) != 0) {
                     for (int x = 0; x < subWidth; x++) {
                         for (int y = 0; y < subHeight; y++) {

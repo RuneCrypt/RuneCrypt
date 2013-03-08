@@ -17,14 +17,17 @@ import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 public class RS2PacketEncoder extends OneToOneEncoder {
 
     private final IsaacRandom encodingRandom;
+    private int currentProtocol;
 
     /**
      * Constructs a new {@code RS2PacketEncoder} instance.
      *
-     * @param encodingRandom The encoding random instance.
+     * @param encodingRandom  The encoding random instance.
+     * @param currentProtocol The current protocol of the server.
      */
-    public RS2PacketEncoder(IsaacRandom encodingRandom) {
+    public RS2PacketEncoder(IsaacRandom encodingRandom, int currentProtocol) {
         this.encodingRandom = encodingRandom;
+        this.currentProtocol = currentProtocol;
     }
 
     @Override
@@ -39,7 +42,17 @@ public class RS2PacketEncoder extends OneToOneEncoder {
                 int length = buf.getLength();
                 int finalLength = length + 2 + type.getValue();
                 ChannelBuffer buffer = ChannelBuffers.buffer(finalLength);
-                buffer.writeByte((opcode + encodingRandom.nextInt()) & 0xFF);
+                if (currentProtocol >= 637) {
+                    if (opcode < 128) {
+                        buffer.writeByte((opcode + encodingRandom.nextInt()) & 0xFF);
+                    } else {
+                        int low = (opcode & 0xFF);
+                        int high = (opcode >> 8) & 0xFF;
+                        buffer.writeByte((high + 128) + encodingRandom.nextInt());
+                        buffer.writeByte((low + encodingRandom.nextInt()) & 0xFF);
+                    }
+                } else
+                    buffer.writeByte((opcode + encodingRandom.nextInt()) & 0xFF);
                 switch (type) {
                     case BYTE:
                         buffer.writeByte(length);

@@ -11,24 +11,44 @@ import net.runecrypt.game.model.player.Player;
  */
 public final class World {
 
+    public static enum LoginType {WORLD, LOBBY}
+
+    ;
     private static World instance = new World();
     private Player[] players = new Player[0x9c4];
+    private Player[] lobbyPlayers = new Player[0x9c4];
 
     /**
-     * Regsiters a player into the game world.
+     * Regsiters a player into the game.
      *
-     * @param player The player who we're registering.
+     * @param player    The player who we're registering.
+     * @param loginType The type of login we're performing.
      */
-    public boolean register(Player player) {
-        for (int i = 0; i < players.length; i++) {
-            if (players[i] == null) {
-                players[i] = player;
+    public boolean register(Player player, LoginType loginType) {
+        Player[] loginPlayers = loginType == LoginType.WORLD ? players : lobbyPlayers;
+        for (int i = 0; i < loginPlayers.length; i++) {
+            if (loginPlayers[i] == null) {
+                loginPlayers[i] = player;
                 player.setIndex(i);
                 return true;
             }
         }
         System.err.println("Player can not join because the server is full!");
         return false;
+    }
+
+    /**
+     * Unregisters a player into the game.
+     *
+     * @param player    The player who we're unregistering.
+     * @param loginType The type of login we're performing.
+     */
+    public void unregister(Player player, LoginType loginType) {
+        Player[] loginPlayers = loginType == LoginType.WORLD ? players : lobbyPlayers;
+        if (player.getIndex() <= -1)
+            return;
+
+        loginPlayers[player.getIndex()] = null;
     }
 
     /**
