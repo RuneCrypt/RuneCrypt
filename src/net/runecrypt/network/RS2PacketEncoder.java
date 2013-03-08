@@ -47,6 +47,8 @@ public class RS2PacketEncoder extends OneToOneEncoder {
                     case SHORT:
                         buffer.writeShort(length);
                         break;
+                    default:
+                    	break;
                 }
                 buffer.writeBytes(buf.getPayload());
                 return buffer;

@@ -1,8 +1,8 @@
 package net.runecrypt.codec.session.impl;
 
 import net.runecrypt.codec.Codec;
+import net.runecrypt.codec.messages.LoginRequest;
 import net.runecrypt.codec.messages.LoginResponse;
-import net.runecrypt.codec.messages.login.LoginRequest;
 import net.runecrypt.codec.session.Session;
 import net.runecrypt.game.World;
 import net.runecrypt.game.model.player.Player;

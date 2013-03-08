@@ -2,7 +2,7 @@ package net.runecrypt.codec.codec317.network.codec.login;
 
 import net.burtleburtle.bob.rand.IsaacRandom;
 import net.runecrypt.codec.CodecManifest;
-import net.runecrypt.codec.messages.login.LoginRequest;
+import net.runecrypt.codec.messages.LoginRequest;
 import net.runecrypt.game.model.player.PlayerDef;
 import net.runecrypt.util.BufferUtils;
 import org.jboss.netty.buffer.ChannelBuffer;

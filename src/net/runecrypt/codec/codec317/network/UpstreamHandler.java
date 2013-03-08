@@ -55,6 +55,8 @@ public class UpstreamHandler extends SimpleChannelUpstreamHandler {
                 case HANDSHAKE_LOGIN:
                     ctx.setAttachment(new LoginSession(ctx, codec));
                     break;
+                case HANDSHAKE_ONDEMAND:
+                	break;
             }
         } else
             ((Session) ctx.getAttachment()).message(e.getMessage());
