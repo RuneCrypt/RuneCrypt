@@ -39,14 +39,7 @@ public class RS2PacketEncoder extends OneToOneEncoder {
                 int length = buf.getLength();
                 int finalLength = length + 2 + type.getValue();
                 ChannelBuffer buffer = ChannelBuffers.buffer(finalLength);
-                if (opcode < 128){
-                    buffer.writeByte((opcode + encodingRandom.nextInt()) & 0xFF);
-                } else {
-                    int low = (opcode & 0xFF);
-                    int high = (opcode >> 8) & 0xFF;
-                    buffer.writeByte((high + 128) + encodingRandom.nextInt());
-                    buffer.writeByte((low + encodingRandom.nextInt()) & 0xFF);
-                }
+                buffer.writeByte((opcode + encodingRandom.nextInt()) & 0xFF);
                 switch (type) {
                     case BYTE:
                         buffer.writeByte(length);
