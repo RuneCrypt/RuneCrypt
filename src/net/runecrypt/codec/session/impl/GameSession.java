@@ -35,27 +35,27 @@ public final class GameSession extends Session {
 
     @Override
     public void disconnected() {
-         // XXX: Unregister player.
+        // XXX: Unregister player.
     }
 
     @Override
     public void message(Object obj) {
         Packet gamePacket = (Packet) obj;
         PacketAssembler assembler = GameEngine.getInstance().getPacketCodec().get(gamePacket.getOpcode());
-        if(assembler != null) {
+        if (assembler != null) {
             PacketDecoder<?> decoder = assembler.getDecoder();
-            if(decoder != null) {
+            if (decoder != null) {
                 PacketContext context = decoder.decode(new PacketReader(gamePacket));
-                if(context != null) {
+                if (context != null) {
                     @SuppressWarnings("unchecked")
                     PacketHandler<PacketContext> handler = (PacketHandler<PacketContext>) assembler.getHandler();
-                    if(handler != null) {
+                    if (handler != null) {
                         handler.handle(player, context);
                     }
                 }
             } else {
                 PacketHandler<?> handler = assembler.getHandler();
-                if(handler != null) {
+                if (handler != null) {
                     handler.handle(player, null);
                 }
             }

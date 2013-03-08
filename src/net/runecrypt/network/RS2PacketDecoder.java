@@ -18,7 +18,8 @@ import static org.jboss.netty.buffer.ChannelBuffers.dynamicBuffer;
  */
 public class RS2PacketDecoder extends ReplayingDecoder<RS2PacketDecoder.RS2PacketDecoderState> {
 
-    public enum RS2PacketDecoderState { OPCODE_READ, OPCODE_SIZE, FINALIZE }
+    public enum RS2PacketDecoderState {OPCODE_READ, OPCODE_SIZE, FINALIZE}
+
     private final IsaacRandom decodingRandom;
     private int opcode = -1, size = -1;
     private final Codec codec;

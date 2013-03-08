@@ -1,9 +1,9 @@
 package net.runecrypt.codec.codec317.encoders;
 
+import net.runecrypt.codec.codec317.context.RunEnergyContext;
 import net.runecrypt.network.Packet;
 import net.runecrypt.network.PacketBuilder;
 import net.runecrypt.network.packet.PacketEncoder;
-import net.runecrypt.codec.codec317.context.RunEnergyContext;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +16,6 @@ public final class RunEnergy implements PacketEncoder<RunEnergyContext> {
 
     @Override
     public Packet encode(RunEnergyContext context) {
-        return new PacketBuilder(110).put((byte)context.runEnergyAmount).toPacket();
+        return new PacketBuilder(110).put((byte) context.runEnergyAmount).toPacket();
     }
 }

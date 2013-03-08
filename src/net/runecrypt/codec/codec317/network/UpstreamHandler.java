@@ -50,13 +50,13 @@ public class UpstreamHandler extends SimpleChannelUpstreamHandler {
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         if (ctx.getAttachment() == null) {
-            HandshakeType handshakeType = (HandshakeType)e.getMessage();
+            HandshakeType handshakeType = (HandshakeType) e.getMessage();
             switch (handshakeType.getType()) {
                 case HANDSHAKE_LOGIN:
                     ctx.setAttachment(new LoginSession(ctx, codec));
                     break;
                 case HANDSHAKE_ONDEMAND:
-                	break;
+                    break;
             }
         } else
             ((Session) ctx.getAttachment()).message(e.getMessage());
@@ -82,7 +82,7 @@ public class UpstreamHandler extends SimpleChannelUpstreamHandler {
         Channel channel = ctx.getChannel();
         if (channel.isConnected()) channel.close();
 
-        Session session = (Session)ctx.getAttachment();
+        Session session = (Session) ctx.getAttachment();
         if (session != null) session.disconnected();
     }
 }

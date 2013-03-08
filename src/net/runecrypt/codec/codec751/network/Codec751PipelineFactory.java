@@ -19,7 +19,6 @@ package net.runecrypt.codec.codec751.network;
 import net.runecrypt.codec.Codec;
 import net.runecrypt.codec.CodecManifest;
 import net.runecrypt.codec.codec751.network.codec.handshake.HandshakeDecoder;
-
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -39,7 +38,7 @@ public class Codec751PipelineFactory implements ChannelPipelineFactory {
     /**
      * Constructs a new {@code CodecPipelineFactory} instance.
      *
-     * @param codec The codec of the server.
+     * @param codec         The codec of the server.
      * @param codecManifest The manifest for the codec.
      */
     public Codec751PipelineFactory(Codec codec, CodecManifest codecManifest) {

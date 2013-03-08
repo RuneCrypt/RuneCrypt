@@ -38,7 +38,7 @@ public class Codec317PipelineFactory implements ChannelPipelineFactory {
     /**
      * Constructs a new {@code CodecPipelineFactory} instance.
      *
-     * @param codec The codec of the server.
+     * @param codec         The codec of the server.
      * @param codecManifest The manifest for the codec.
      */
     public Codec317PipelineFactory(Codec codec, CodecManifest codecManifest) {

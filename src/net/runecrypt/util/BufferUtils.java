@@ -15,7 +15,8 @@ public final class BufferUtils {
 
     /**
      * Puts a 5 byte integer into the buffer.
-     * @param buf The channel buffer
+     *
+     * @param buf   The channel buffer
      * @param value The value to be added.
      */
     public static void put5ByteInteger(ChannelBuffer buf, long value) {
@@ -25,6 +26,7 @@ public final class BufferUtils {
 
     /**
      * Writes a string
+     *
      * @param buffer The ChannelBuffer
      * @param string The string being wrote.
      */
@@ -36,11 +38,12 @@ public final class BufferUtils {
 
     /**
      * Puts a string into a buffer.
-     * @param buf The buffer.
+     *
+     * @param buf    The buffer.
      * @param string The string.
      */
     public static void putString(ChannelBuffer buf, String string) {
-        for(char c : string.toCharArray()) {
+        for (char c : string.toCharArray()) {
             buf.writeByte(c);
         }
         buf.writeByte(0);
@@ -48,7 +51,8 @@ public final class BufferUtils {
 
     /**
      * Writes a 'tri-byte' to the specified buffer.
-     * @param buf The buffer.
+     *
+     * @param buf   The buffer.
      * @param value The value.
      */
     public static void putTriByte(ChannelBuffer buf, int value) {
@@ -59,13 +63,14 @@ public final class BufferUtils {
 
     /**
      * Reads a string from a bytebuffer.
+     *
      * @param buf The bytebuffer.
      * @return The decoded string.
      */
     public static String readString(ByteBuffer buf) {
         StringBuilder bldr = new StringBuilder();
         byte b;
-        while((b = buf.get()) != 0) {
+        while ((b = buf.get()) != 0) {
             bldr.append((char) b);
         }
         return bldr.toString();
@@ -73,13 +78,14 @@ public final class BufferUtils {
 
     /**
      * Reads a RuneScape string from a buffer.
+     *
      * @param buf The buffer.
      * @return The string.
      */
     public static String readString(ChannelBuffer buf) {
         StringBuilder bldr = new StringBuilder();
         byte b;
-        while(buf.readable() && (b = buf.readByte()) != 10) {
+        while (buf.readable() && (b = buf.readByte()) != 10) {
             bldr.append((char) b);
         }
         return bldr.toString();

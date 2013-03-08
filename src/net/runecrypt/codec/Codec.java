@@ -21,7 +21,6 @@ import net.runecrypt.codec.codec317.Codec317;
 import net.runecrypt.codec.codec317.network.Codec317PipelineFactory;
 import net.runecrypt.codec.codec751.Codec751;
 import net.runecrypt.codec.codec751.network.Codec751PipelineFactory;
-
 import org.jboss.netty.channel.ChannelPipelineFactory;
 
 /**
@@ -80,7 +79,7 @@ public abstract class Codec {
             case 317:
                 return new Codec317(server);
             case 751:
-            	return new Codec751(server);
+                return new Codec751(server);
         }
         throw new IllegalStateException("No such codec for revision: " + revision);
     }
@@ -98,7 +97,7 @@ public abstract class Codec {
             case 317:
                 return new Codec317PipelineFactory(codec, codecManifest);
             case 751:
-            	return new Codec751PipelineFactory(codec, codecManifest);
+                return new Codec751PipelineFactory(codec, codecManifest);
         }
         throw new IllegalStateException("No such pipeline for revision: " + revision);
     }

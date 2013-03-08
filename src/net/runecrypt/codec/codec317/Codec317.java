@@ -329,7 +329,8 @@ public class Codec317 extends Codec {
         try {
             GameEngine.getInstance().getPacketCodec().register(103, new CommandDecoder(), new CommandHandler());
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
+            ;
         }
     }
 

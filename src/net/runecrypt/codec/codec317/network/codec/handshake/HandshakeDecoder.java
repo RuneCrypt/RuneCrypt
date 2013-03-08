@@ -56,9 +56,9 @@ public class HandshakeDecoder extends FrameDecoder {
                 channel.getPipeline().addBefore("upHandler", "loginDecoder", new LoginDecoder(codecManifest));
                 break;
             default:
-            	break;
+                break;
         }
         channel.getPipeline().remove(HandshakeDecoder.class);
-        return buffer.readable() ? new Object[] { handshakeType, buffer.readBytes(buffer.readableBytes()) } : handshakeType;
+        return buffer.readable() ? new Object[]{handshakeType, buffer.readBytes(buffer.readableBytes())} : handshakeType;
     }
 }

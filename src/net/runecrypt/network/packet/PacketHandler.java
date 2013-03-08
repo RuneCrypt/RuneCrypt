@@ -7,10 +7,11 @@ import net.runecrypt.game.model.player.Player;
  */
 public interface PacketHandler<T extends PacketContext> {
 
-	/**
-	 * Handles a certain packet for a player.
-	 * @param player The player to handle the packet for.
-	 * @param context The packet context.
-	 */
-	public void handle(Player player, T context);
+    /**
+     * Handles a certain packet for a player.
+     *
+     * @param player  The player to handle the packet for.
+     * @param context The packet context.
+     */
+    public void handle(Player player, T context);
 }

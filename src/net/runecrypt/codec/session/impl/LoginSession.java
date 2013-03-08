@@ -25,7 +25,8 @@ public class LoginSession extends Session {
 
     /**
      * Constructs a new {@code LoginSession} instance.
-     * @param ctx The channel handler context for the session.
+     *
+     * @param ctx   The channel handler context for the session.
      * @param codec The current codec for the server.
      */
     public LoginSession(ChannelHandlerContext ctx, Codec codec) {
@@ -43,7 +44,7 @@ public class LoginSession extends Session {
         if (!(obj instanceof LoginRequest))
             return;
 
-        LoginRequest loginRequest = (LoginRequest)obj;
+        LoginRequest loginRequest = (LoginRequest) obj;
         Player player = new Player(loginRequest.getPlayerDef(), getChannel());
 
         int returnCode = 2;

@@ -27,7 +27,6 @@ import org.openrs.cache.Container;
 import org.openrs.cache.FileStore;
 
 import javax.swing.*;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
@@ -51,14 +50,14 @@ import java.util.concurrent.Executors;
  * @since 1.0 <4:48:11 PM - Mar 3, 2013>
  */
 public class Server {
-	
-	public static final BigInteger MODULUS_KEY = new BigInteger("93640689943905294863765289827408621343761622604573228853685321771858455502571982144215122897901870174704904532494432887476204270705658036872335563522839443554400688853336049767174347131774078429389825418360856177758652274802442661649907032212044334175713179544786760681935009554912428382556040178918498953291");
-	public static final BigInteger PRIVATE_KEY = new BigInteger("35276179776692216990272689328911781930148323854987387997141109742975928222271383602522653908880468632120624807402765667621343778925675439405848493641994332117332306893601213916700706755356821003854299821309833095832525178993298632475524816949423812953734885712188792894365245111417299421699918648649881074073");
-	private ServerContext serverContext;
+
+    public static final BigInteger MODULUS_KEY = new BigInteger("93640689943905294863765289827408621343761622604573228853685321771858455502571982144215122897901870174704904532494432887476204270705658036872335563522839443554400688853336049767174347131774078429389825418360856177758652274802442661649907032212044334175713179544786760681935009554912428382556040178918498953291");
+    public static final BigInteger PRIVATE_KEY = new BigInteger("35276179776692216990272689328911781930148323854987387997141109742975928222271383602522653908880468632120624807402765667621343778925675439405848493641994332117332306893601213916700706755356821003854299821309833095832525178993298632475524816949423812953734885712188792894365245111417299421699918648649881074073");
+    private ServerContext serverContext;
     public UpdateService updateService = new UpdateService();
     private Executor executor = Executors.newCachedThreadPool();
-	public Cache cache;
-	public ByteBuffer checksumTable;
+    public Cache cache;
+    public ByteBuffer checksumTable;
 
     /**
      * Constructs a new {@code Server} instance.
@@ -112,16 +111,7 @@ public class Server {
         Server server = new Server(serverContext);
 
         System.out.println("Bootstrapping server...");
-        
-		try {
-			server.cache = new Cache(FileStore.open("data/cache"));
-			Container container = new Container(Container.COMPRESSION_NONE, server.cache.createChecksumTable().encode(true, MODULUS_KEY, PRIVATE_KEY));
-			server.checksumTable = container.encode();
-	        server.executor.execute(server.updateService);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
+
         String asString = JOptionPane.showInputDialog("Please select a revision.");
         int revision = Integer.valueOf(asString);
 
@@ -134,27 +124,38 @@ public class Server {
         if (manifest != null && manifest.requiredProtocol() != revision)
             throw new IllegalStateException("Protocol doesn't match input!");
 
+        if (manifest.requiredProtocol() >= 700) {
+            try {
+                server.cache = new Cache(FileStore.open("data/cache/" + manifest.requiredProtocol()));
+                Container container = new Container(Container.COMPRESSION_NONE, server.cache.createChecksumTable().encode(true, MODULUS_KEY, PRIVATE_KEY));
+                server.checksumTable = container.encode();
+                server.executor.execute(server.updateService);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (codec != null) {
 
             ServerBootstrap bootstrap = new ServerBootstrap();
 
             bootstrap.setFactory(new NioServerSocketChannelFactory());
             bootstrap.setPipelineFactory(Codec.pipelineFactoryForRevision(revision, codec, manifest));
-           
+
             if (manifest.requiredProtocol() != 317) {
-            	switch (manifest.requiredProtocol()) {
-            	case 751:
-            		int[] networkingPorts = new int[] { 43594, 53594, 40001, 50001 };
-            		for (int i = 0; i < networkingPorts.length; i++) 
-            			bootstrap.bind(new InetSocketAddress(networkingPorts[i]));
-            		break;
-            	}
+                switch (manifest.requiredProtocol()) {
+                    case 751:
+                        int[] networkingPorts = new int[]{43594, 53594, 40001, 50001};
+                        for (int i = 0; i < networkingPorts.length; i++)
+                            bootstrap.bind(new InetSocketAddress(networkingPorts[i]));
+                        break;
+                }
             } else {
-            	bootstrap.setOption("localAddress", new InetSocketAddress(serverContext.getServerAddress(), serverContext.getServerPort()));
-            	bootstrap.bindAsync();
+                bootstrap.setOption("localAddress", new InetSocketAddress(serverContext.getServerAddress(), serverContext.getServerPort()));
+                bootstrap.bindAsync();
             }
         }
-        
+
         String[] authors = manifest.authors();
         String author = Arrays.toString(authors);
         System.out.println("Successfully bootstrapped [revision=" + manifest.requiredProtocol() + ", authors=" + author + "]");

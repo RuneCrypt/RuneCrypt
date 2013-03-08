@@ -11,31 +11,31 @@ import org.jboss.netty.buffer.ChannelBuffer;
  */
 public final class FileResponse {
 
-	private final boolean priority;
-	private final int type, file;
-	private final ChannelBuffer container;
+    private final boolean priority;
+    private final int type, file;
+    private final ChannelBuffer container;
 
-	public FileResponse(boolean priority, int type, int file, ChannelBuffer container) {
-		this.priority = priority;
-		this.type = type;
-		this.file = file;
-		this.container = container;
-	}
+    public FileResponse(boolean priority, int type, int file, ChannelBuffer container) {
+        this.priority = priority;
+        this.type = type;
+        this.file = file;
+        this.container = container;
+    }
 
-	public boolean isPriority() {
-		return priority;
-	}
+    public boolean isPriority() {
+        return priority;
+    }
 
-	public int getType() {
-		return type;
-	}
+    public int getType() {
+        return type;
+    }
 
-	public int getFile() {
-		return file;
-	}
+    public int getFile() {
+        return file;
+    }
 
-	public ChannelBuffer getContainer() {
-		return container;
-	}
+    public ChannelBuffer getContainer() {
+        return container;
+    }
 
 }

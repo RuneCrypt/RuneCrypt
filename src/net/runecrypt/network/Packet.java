@@ -28,6 +28,7 @@ public final class Packet {
 
     /**
      * The type of packet.
+     *
      * @author Sean
      */
     public enum PacketType {
@@ -41,6 +42,7 @@ public final class Packet {
 
         /**
          * Creates a new PacketType.
+         *
          * @param value The size of the packet type.
          */
         PacketType(int value) {
@@ -49,6 +51,7 @@ public final class Packet {
 
         /**
          * Gets the size of the packet type.
+         *
          * @return the value.
          */
         public int getValue() {
@@ -79,8 +82,9 @@ public final class Packet {
 
     /**
      * Creates a packet.
-     * @param opcode The opcode.
-     * @param type The type.
+     *
+     * @param opcode  The opcode.
+     * @param type    The type.
      * @param payload The payload.
      */
     public Packet(int opcode, PacketType type, ChannelBuffer payload) {
@@ -92,6 +96,7 @@ public final class Packet {
 
     /**
      * Gets the length.
+     *
      * @return the length.
      */
     public int getLength() {
@@ -100,6 +105,7 @@ public final class Packet {
 
     /**
      * Gets the opcode.
+     *
      * @return The opcode.
      */
     public int getOpcode() {
@@ -109,6 +115,7 @@ public final class Packet {
 
     /**
      * Gets the payload of the packet.
+     *
      * @return The payload.
      */
     public ChannelBuffer getPayload() {
@@ -117,6 +124,7 @@ public final class Packet {
 
     /**
      * Gets the packet type.
+     *
      * @return The type.
      */
     public PacketType getType() {
@@ -125,6 +133,7 @@ public final class Packet {
 
     /**
      * Is the buffer empty.
+     *
      * @return true if the buffer is empty, false if not.
      */
     public boolean isEmpty() {
@@ -133,6 +142,7 @@ public final class Packet {
 
     /**
      * Checks if the packet has no header.
+     *
      * @return true or false.
      */
     public boolean isHeaderless() {

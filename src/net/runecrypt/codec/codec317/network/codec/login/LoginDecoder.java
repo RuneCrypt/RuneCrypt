@@ -24,6 +24,7 @@ import java.security.SecureRandom;
 public class LoginDecoder extends FrameDecoder {
 
     private enum LoginState {HANDSHAKE, HEADER, PAYLOAD}
+
     private LoginState loginState = LoginState.HANDSHAKE;
     private long serverSeed;
     private int loginSize;
@@ -118,7 +119,7 @@ public class LoginDecoder extends FrameDecoder {
         PlayerDef playerDef = new PlayerDef(username, password, rights);
 
         LoginRequest loginRequest = new LoginRequest(playerDef, decodingRandom, encodingRandom, codecManifest);
-        return buffer.readable() ? new Object[] { loginRequest, buffer.readBytes(buffer.readableBytes()) } : loginRequest;
+        return buffer.readable() ? new Object[]{loginRequest, buffer.readBytes(buffer.readableBytes())} : loginRequest;
     }
 
     /**

@@ -35,8 +35,8 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
  */
 public class HandshakeDecoder extends FrameDecoder {
 
-	@SuppressWarnings("unused")
-	private final CodecManifest codecManifest;
+    @SuppressWarnings("unused")
+    private final CodecManifest codecManifest;
 
     /**
      * Constructs a {@code HandshakeDecoder} instance.
@@ -51,17 +51,17 @@ public class HandshakeDecoder extends FrameDecoder {
      */
     @Override
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
-        HandshakeType handshakeType = new HandshakeType(0xFF & buffer.readByte());        
+        HandshakeType handshakeType = new HandshakeType(0xFF & buffer.readByte());
         switch (handshakeType.getType()) {
-        	case HANDSHAKE_ONDEMAND:
-        		channel.getPipeline().addFirst("encoder", new UpdateEncoder());
-        		channel.getPipeline().addFirst("xor-encoder", new XorEncoder());
-        		channel.getPipeline().addBefore("upHandler", "updateDecoder", new UpdateDecoder());
-        		break;
-        	default:
-        		break;
+            case HANDSHAKE_ONDEMAND:
+                channel.getPipeline().addFirst("encoder", new UpdateEncoder());
+                channel.getPipeline().addFirst("xor-encoder", new XorEncoder());
+                channel.getPipeline().addBefore("upHandler", "updateDecoder", new UpdateDecoder());
+                break;
+            default:
+                break;
         }
         channel.getPipeline().remove(HandshakeDecoder.class);
-        return buffer.readable() ? new Object[] { handshakeType, buffer.readBytes(buffer.readableBytes()) } : handshakeType;
+        return buffer.readable() ? new Object[]{handshakeType, buffer.readBytes(buffer.readableBytes())} : handshakeType;
     }
 }

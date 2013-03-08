@@ -21,7 +21,7 @@ public class LoginEncoder extends OneToOneEncoder {
         if (!(msg instanceof LoginResponse))
             return msg;
 
-        LoginResponse loginResponse = (LoginResponse)msg;
+        LoginResponse loginResponse = (LoginResponse) msg;
 
         ChannelBuffer channelBuffer = ChannelBuffers.buffer(3);
         channelBuffer.writeByte(loginResponse.returnCode);

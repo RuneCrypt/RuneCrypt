@@ -13,6 +13,7 @@ public class GameEngine {
 
     private static GameEngine instance = new GameEngine();
     private PacketCodec packetCodec;
+
     {
         packetCodec = new PacketCodec();
     }

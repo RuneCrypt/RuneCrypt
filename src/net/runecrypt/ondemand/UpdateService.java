@@ -1,9 +1,9 @@
 package net.runecrypt.ondemand;
 
+import net.runecrypt.codec.session.impl.UpdateSession;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
-
-import net.runecrypt.codec.session.impl.UpdateSession;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,32 +14,32 @@ import net.runecrypt.codec.session.impl.UpdateSession;
  */
 public final class UpdateService implements Runnable {
 
-	private final Queue<UpdateSession> pendingSessions = new ArrayDeque<>(); 
+    private final Queue<UpdateSession> pendingSessions = new ArrayDeque<>();
 
-	public void addPendingSession(UpdateSession session) {
-		synchronized (pendingSessions) {
-			pendingSessions.add(session);
-			pendingSessions.notifyAll();
-		}
-	}
+    public void addPendingSession(UpdateSession session) {
+        synchronized (pendingSessions) {
+            pendingSessions.add(session);
+            pendingSessions.notifyAll();
+        }
+    }
 
-	@Override
-	public void run() {
-		for (;;) {
-			UpdateSession session;
+    @Override
+    public void run() {
+        for (; ; ) {
+            UpdateSession session;
 
-			synchronized (pendingSessions) {
-				while ((session = pendingSessions.poll()) == null) {
-					try {
-						pendingSessions.wait();
-					} catch (InterruptedException e) {
-						/* ignore */
-					}
-				}
-			}
+            synchronized (pendingSessions) {
+                while ((session = pendingSessions.poll()) == null) {
+                    try {
+                        pendingSessions.wait();
+                    } catch (InterruptedException e) {
+                        /* ignore */
+                    }
+                }
+            }
 
-			session.processFileQueue();
-		}
-	}
+            session.processFileQueue();
+        }
+    }
 
 }

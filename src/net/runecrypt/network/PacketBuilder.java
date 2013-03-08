@@ -18,7 +18,7 @@ public class PacketBuilder {
     private static final int MAX_BITS = 32;
 
     /**
-     *  TheBit mask array.
+     * TheBit mask array.
      */
     public static final int[] BIT_MASKS = new int[MAX_BITS];
 
@@ -26,7 +26,7 @@ public class PacketBuilder {
      * Populates the bit mask array.
      */
     static {
-        for(int i = 0; i < BIT_MASKS.length; i++) {
+        for (int i = 0; i < BIT_MASKS.length; i++) {
             BIT_MASKS[i] = (1 << i) - 1;
         }
     }
@@ -65,6 +65,7 @@ public class PacketBuilder {
 
     /**
      * Creates a new PacketBuilder with the packet type set to Fixed.
+     *
      * @param opcode The opcode.
      */
     public PacketBuilder(int opcode) {
@@ -73,8 +74,9 @@ public class PacketBuilder {
 
     /**
      * Creates a new PacketBuilder.
+     *
      * @param opcode The opcode id.
-     * @param type The packet type.
+     * @param type   The packet type.
      */
     public PacketBuilder(int opcode, Packet.PacketType type) {
         this.opcode = opcode;
@@ -84,6 +86,7 @@ public class PacketBuilder {
 
     /**
      * Gets the length of the buffer.
+     *
      * @return The length of the buffer.
      */
     public int getLength() {
@@ -92,6 +95,7 @@ public class PacketBuilder {
 
     /**
      * Checks if this packet builder is empty.
+     *
      * @return <code>true</code> if so, <code>false</code> if not.
      */
     public boolean isEmpty() {
@@ -100,6 +104,7 @@ public class PacketBuilder {
 
     /**
      * Writes an array of bytes.
+     *
      * @param b The byte array.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -110,7 +115,8 @@ public class PacketBuilder {
 
     /**
      * Puts a sequence of bytes in the buffer.
-     * @param data The bytes.
+     *
+     * @param data   The bytes.
      * @param offset The offset.
      * @param length The length.
      * @return The PacketBuilder instance, for chaining.
@@ -122,6 +128,7 @@ public class PacketBuilder {
 
     /**
      * Puts an <code>ChannelBuffer</code>.
+     *
      * @param buf The buffer.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -132,6 +139,7 @@ public class PacketBuilder {
 
     /**
      * Writes a byte.
+     *
      * @param b The byte to write.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -142,6 +150,7 @@ public class PacketBuilder {
 
     /**
      * Puts a GamePackets payload into this buffer.
+     *
      * @param packet The game packet.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -152,6 +161,7 @@ public class PacketBuilder {
 
     /**
      * Adds the bytes of another builders payload..
+     *
      * @param builder The game packet builder.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -162,12 +172,13 @@ public class PacketBuilder {
 
     /**
      * Puts a number of bits into the buffer.
+     *
      * @param numberOfBits The number of bits to added into the buffer.
-     * @param value The value
+     * @param value        The value
      */
     public void putBits(int numberOfBits, int value) {
-        if(numberOfBits > MAX_BITS) {
-            throw new IllegalStateException("Error! Cant assign more than "+MAX_BITS+" to the buffer");
+        if (numberOfBits > MAX_BITS) {
+            throw new IllegalStateException("Error! Cant assign more than " + MAX_BITS + " to the buffer");
         }
         if (mode != Packet.AccessMode.BIT_ACCESS) {
             throw new IllegalStateException("Error! AccessMode set to BYTE_ACCESS");
@@ -181,7 +192,7 @@ public class PacketBuilder {
         for (; numberOfBits > bitOffset; bitOffset = 8) {
             int tmp = payload.getByte(bytePos);
             tmp &= ~BIT_MASKS[bitOffset];
-            tmp |= (value >> (numberOfBits-bitOffset)) & BIT_MASKS[bitOffset];
+            tmp |= (value >> (numberOfBits - bitOffset)) & BIT_MASKS[bitOffset];
             payload.setByte(bytePos++, tmp);
             numberOfBits -= bitOffset;
         }
@@ -200,6 +211,7 @@ public class PacketBuilder {
 
     /**
      * Puts a type-A byte in the buffer.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -210,6 +222,7 @@ public class PacketBuilder {
 
     /**
      * Writes a type-A byte.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -220,6 +233,7 @@ public class PacketBuilder {
 
     /**
      * Puts a type-C byte in the buffer.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -230,6 +244,7 @@ public class PacketBuilder {
 
     /**
      * Writes a type-C byte.
+     *
      * @param val The value to write.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -257,7 +272,7 @@ public class PacketBuilder {
      *
      * @param data   The bytes to add to this packet
      * @param offset The index of the first byte to append
-     * @param len	The number of bytes to append
+     * @param len    The number of bytes to append
      * @return A reference to this object
      */
     public PacketBuilder putBytes(byte[] data, int offset, int len) {
@@ -266,8 +281,10 @@ public class PacketBuilder {
         }
         return this;
     }
+
     /**
      * Puts a type-S byte in the buffer.
+     *
      * @param i The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -278,6 +295,7 @@ public class PacketBuilder {
 
     /**
      * Puts several type-A bytes into the buffer.
+     *
      * @return The PacketBuilder instance, for chaining.
      */
     public PacketBuilder putBytesA(byte[] data, int offset, int len) {
@@ -289,6 +307,7 @@ public class PacketBuilder {
 
     /**
      * Puts several type-A bytes into the buffer.
+     *
      * @return The PacketBuilder instance, for chaining.
      */
     public PacketBuilder putBytesA(Packet data, int offset, int len) {
@@ -300,6 +319,7 @@ public class PacketBuilder {
 
     /**
      * Writes an integer.
+     *
      * @param i The integer.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -310,6 +330,7 @@ public class PacketBuilder {
 
     /**
      * Writes a type-1 integer.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -323,6 +344,7 @@ public class PacketBuilder {
 
     /**
      * Writes a type-2 integer.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -336,6 +358,7 @@ public class PacketBuilder {
 
     /**
      * Puts a string into the buffer. (it prefixes & postfixes the string)
+     *
      * @param str The string.
      * @return The PacketBuilder for chaining.
      */
@@ -348,6 +371,7 @@ public class PacketBuilder {
 
     /**
      * Writes a little-endian integer.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -361,6 +385,7 @@ public class PacketBuilder {
 
     /**
      * Writes a little-endian short.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -372,6 +397,7 @@ public class PacketBuilder {
 
     /**
      * Writes a little endian type-A short.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -383,6 +409,7 @@ public class PacketBuilder {
 
     /**
      * Writes a long.
+     *
      * @param l The long.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -393,13 +420,14 @@ public class PacketBuilder {
 
     /**
      * Puts a series of reversed bytes in the buffer.
-     * @param is The source byte array.
+     *
+     * @param is     The source byte array.
      * @param offset The offset.
      * @param length The length.
      * @return The PacketBuilder instance, for chaining.
      */
     public PacketBuilder putReverse(byte[] is, int offset, int length) {
-        for(int i = (offset + length - 1); i >= offset; i--) {
+        for (int i = (offset + length - 1); i >= offset; i--) {
             payload.writeByte(is[i]);
         }
         return this;
@@ -407,13 +435,14 @@ public class PacketBuilder {
 
     /**
      * Puts a series of reversed type-A bytes in the buffer.
-     * @param is The source byte array.
+     *
+     * @param is     The source byte array.
      * @param offset The offset.
      * @param length The length.
      * @return The PacketBuilder instance, for chaining.
      */
     public PacketBuilder putReverseA(byte[] is, int offset, int length) {
-        for(int i = (offset + length - 1); i >= offset; i--) {
+        for (int i = (offset + length - 1); i >= offset; i--) {
             putByteA(is[i]);
         }
         return this;
@@ -421,6 +450,7 @@ public class PacketBuilder {
 
     /**
      * Writes a short.
+     *
      * @param s The short.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -431,6 +461,7 @@ public class PacketBuilder {
 
     /**
      * Writes a type-A short.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -442,11 +473,12 @@ public class PacketBuilder {
 
     /**
      * Puts a byte or short for signed use.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
     public PacketBuilder putSignedSmart(int val) {
-        if(val >= 128) {
+        if (val >= 128) {
             putShort(val + 49152);
         } else {
             put(val + 64);
@@ -456,11 +488,12 @@ public class PacketBuilder {
 
     /**
      * Puts a byte or short.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
     public PacketBuilder putSmart(int val) {
-        if(val >= 128) {
+        if (val >= 128) {
             putShort(val + 32768);
         } else {
             put(val);
@@ -470,6 +503,7 @@ public class PacketBuilder {
 
     /**
      * Puts a 3-byte integer.
+     *
      * @param val The value.
      * @return The PacketBuilder instance, for chaining.
      */
@@ -504,6 +538,7 @@ public class PacketBuilder {
 
     /**
      * Returns the PacketBuilder data to a new Packet.
+     *
      * @return A new Packet with the data from the PacketBuilder.
      */
     public Packet toPacket() {

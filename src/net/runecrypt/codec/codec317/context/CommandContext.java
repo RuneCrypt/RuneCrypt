@@ -11,8 +11,8 @@ import net.runecrypt.network.packet.PacketContext;
  */
 public class CommandContext implements PacketContext {
 
-	public String command;
-	public String[] args;
+    public String command;
+    public String[] args;
 
     public CommandContext(String command, String[] args) {
         this.command = command;

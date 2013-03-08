@@ -17,8 +17,9 @@ public final class Player extends Entity {
 
     /**
      * Constructs a new {@code Player} instance.
+     *
      * @param playerDef The definition of the player.
-     * @param channel The channel that represents a player's connection.
+     * @param channel   The channel that represents a player's connection.
      */
     public Player(PlayerDef playerDef, Channel channel) {
         this.playerDef = playerDef;
