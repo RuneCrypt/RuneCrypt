@@ -3,8 +3,8 @@ package net.runecrypt.codec.session.impl;
 import net.runecrypt.GameEngine;
 import net.runecrypt.codec.session.Session;
 import net.runecrypt.game.model.player.Player;
-import net.runecrypt.network.Packet;
-import net.runecrypt.network.PacketReader;
+import net.runecrypt.network.Frame;
+import net.runecrypt.network.FrameReader;
 import net.runecrypt.network.packet.PacketAssembler;
 import net.runecrypt.network.packet.PacketContext;
 import net.runecrypt.network.packet.PacketDecoder;
@@ -40,12 +40,12 @@ public final class GameSession extends Session {
 
     @Override
     public void message(Object obj) {
-        Packet gamePacket = (Packet) obj;
-        PacketAssembler assembler = GameEngine.getInstance().getPacketCodec().get(gamePacket.getOpcode());
+    	Frame gamePacket = (Frame) obj;
+        PacketAssembler assembler = GameEngine.getInstance().packetCodec.get(gamePacket.getOpcode());
         if (assembler != null) {
             PacketDecoder<?> decoder = assembler.getDecoder();
             if (decoder != null) {
-                PacketContext context = decoder.decode(new PacketReader(gamePacket));
+                PacketContext context = decoder.decode(new FrameReader(gamePacket));
                 if (context != null) {
                     @SuppressWarnings("unchecked")
                     PacketHandler<PacketContext> handler = (PacketHandler<PacketContext>) assembler.getHandler();

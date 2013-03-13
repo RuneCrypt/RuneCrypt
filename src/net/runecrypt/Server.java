@@ -19,6 +19,7 @@ package net.runecrypt;
 import net.runecrypt.codec.Codec;
 import net.runecrypt.codec.CodecManifest;
 import net.runecrypt.ondemand.UpdateService;
+import net.runecrypt.util.BinaryLandscapeHandler;
 import net.runecrypt.util.ConsoleLogger;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
@@ -26,7 +27,6 @@ import org.openrs.cache.Cache;
 import org.openrs.cache.Container;
 import org.openrs.cache.FileStore;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
@@ -112,7 +112,7 @@ public class Server {
 
         System.out.println("Bootstrapping server...");
 
-        String asString = JOptionPane.showInputDialog("Please select a revision.");
+        String asString = "751"; //JOptionPane.showInputDialog("Please select a revision.");
         int revision = Integer.valueOf(asString);
 
         Codec codec = Codec.forRevision(server, revision);
@@ -130,6 +130,8 @@ public class Server {
                 Container container = new Container(Container.COMPRESSION_NONE, server.cache.createChecksumTable().encode(true, MODULUS_KEY, PRIVATE_KEY));
                 server.checksumTable = container.encode();
                 server.executor.execute(server.updateService);
+                
+                BinaryLandscapeHandler.loadLandscapes();
             } catch (IOException e) {
                 e.printStackTrace();
             }

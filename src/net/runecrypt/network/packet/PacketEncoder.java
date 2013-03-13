@@ -1,6 +1,6 @@
 package net.runecrypt.network.packet;
 
-import net.runecrypt.network.Packet;
+import net.runecrypt.network.Frame;
 
 /**
  * @param <T> The GamePacketContext type.
@@ -14,5 +14,5 @@ public interface PacketEncoder<T extends PacketContext> {
      * @param context The GamePacketContext for this packet.
      * @return The encoded packet.
      */
-    public Packet encode(T context);
+    public Frame encode(T context);
 }

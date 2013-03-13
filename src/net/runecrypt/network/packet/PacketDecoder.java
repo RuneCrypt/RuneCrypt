@@ -1,6 +1,6 @@
 package net.runecrypt.network.packet;
 
-import net.runecrypt.network.PacketReader;
+import net.runecrypt.network.FrameReader;
 
 /**
  * @param <T>
@@ -14,5 +14,5 @@ public interface PacketDecoder<T extends PacketContext> {
      * @param packet The packet to decode.
      * @return The packet to decode.
      */
-    public T decode(PacketReader packet);
+    public T decode(FrameReader packet);
 }

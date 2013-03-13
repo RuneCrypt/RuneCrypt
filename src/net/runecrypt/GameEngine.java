@@ -16,7 +16,7 @@ import java.util.List;
 public class GameEngine {
 
     private static GameEngine instance = new GameEngine();
-    private PacketCodec packetCodec;
+    public PacketCodec packetCodec;
     {
         packetCodec = new PacketCodec();
     }
@@ -34,15 +34,6 @@ public class GameEngine {
      */
     public static GameEngine getInstance() {
         return instance;
-    }
-
-    /**
-     * Gets the packet codec instance.
-     *
-     * @return The codec instance
-     */
-    public PacketCodec getPacketCodec() {
-        return packetCodec;
     }
 
     /**

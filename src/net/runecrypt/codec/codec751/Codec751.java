@@ -1,15 +1,22 @@
 package net.runecrypt.codec.codec751;
 
-import net.runecrypt.GameEngine;
 import net.runecrypt.Server;
 import net.runecrypt.codec.Codec;
 import net.runecrypt.codec.CodecManifest;
+import net.runecrypt.codec.codec751.decoders.DisplayModeDecoder;
 import net.runecrypt.codec.codec751.decoders.WorldListDecoder;
-import net.runecrypt.codec.codec751.encoders.Config;
+import net.runecrypt.codec.codec751.encoders.Config751;
+import net.runecrypt.codec.codec751.encoders.GameInterface;
 import net.runecrypt.codec.codec751.encoders.KeepAlive;
+import net.runecrypt.codec.codec751.encoders.LoginResponseEncoder;
+import net.runecrypt.codec.codec751.encoders.MainInterface;
+import net.runecrypt.codec.codec751.encoders.MapRegionUpdate;
 import net.runecrypt.codec.codec751.encoders.WorldList;
+import net.runecrypt.codec.codec751.handlers.DisplayModeHandler;
 import net.runecrypt.codec.codec751.handlers.KeepAliveHandler;
 import net.runecrypt.codec.codec751.handlers.WorldListHandler;
+
+import static net.runecrypt.GameEngine.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -151,9 +158,13 @@ public class Codec751 extends Codec {
     @Override
     public void setOutgoingPackets() {
         try {
-            GameEngine.getInstance().getPacketCodec().register(Config.class);
-            GameEngine.getInstance().getPacketCodec().register(WorldList.class);
-            GameEngine.getInstance().getPacketCodec().register(KeepAlive.class);
+        	getInstance().packetCodec.register(Config751.class);
+            getInstance().packetCodec.register(WorldList.class);
+            getInstance().packetCodec.register(KeepAlive.class);
+            getInstance().packetCodec.register(MapRegionUpdate.class);
+            getInstance().packetCodec.register(LoginResponseEncoder.class);
+            getInstance().packetCodec.register(GameInterface.class);
+            getInstance().packetCodec.register(MainInterface.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,8 +173,9 @@ public class Codec751 extends Codec {
     @Override
     public void setIncommingPackets() {
         try {
-            GameEngine.getInstance().getPacketCodec().register(103, new WorldListDecoder(), new WorldListHandler());
-            GameEngine.getInstance().getPacketCodec().register(9, new KeepAliveHandler());
+        	getInstance().packetCodec.register(103, new WorldListDecoder(), new WorldListHandler());
+           	getInstance().packetCodec.register(9, new KeepAliveHandler());
+           	getInstance().packetCodec.register(84, new DisplayModeDecoder(), new DisplayModeHandler());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -10,6 +10,7 @@ package net.runecrypt.game.model;
 public class Entity {
 
     private int index;
+    private Position position = new Position(3222, 3222, 0);
 
     /**
      * Gets the index of the current Entity.
@@ -28,4 +29,13 @@ public class Entity {
     public void setIndex(int index) {
         this.index = index;
     }
+
+	/**
+	 * Gets the position
+	 * 
+	 * @return the position
+	 */
+	public Position getPosition() {
+		return position;
+	}
 }

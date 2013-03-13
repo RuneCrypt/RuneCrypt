@@ -1,7 +1,7 @@
 package net.runecrypt.codec.codec751.encoders;
 
-import net.runecrypt.network.Packet;
-import net.runecrypt.network.PacketBuilder;
+import net.runecrypt.network.Frame;
+import net.runecrypt.network.FrameBuffer;
 import net.runecrypt.network.packet.PacketContext;
 import net.runecrypt.network.packet.PacketEncoder;
 
@@ -15,7 +15,7 @@ import net.runecrypt.network.packet.PacketEncoder;
 public class KeepAlive implements PacketEncoder<PacketContext> {
 
     @Override
-    public Packet encode(PacketContext context) {
-        return new PacketBuilder(3, Packet.PacketType.FIXED).toPacket();
+    public Frame encode(PacketContext context) {
+        return new FrameBuffer(new Frame(3, 0)).getFrame();
     }
 }

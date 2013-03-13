@@ -1,9 +1,9 @@
 package net.runecrypt.network.packet;
 
-import net.runecrypt.network.Packet;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import net.runecrypt.network.Frame;
 
 /**
  * @author Sean
@@ -38,7 +38,7 @@ public final class PacketCodec {
      * @param context    The game packet context.
      * @return The encoded game packet.
      */
-    public Packet encode(Class<?> identifier, PacketContext context) {
+    public Frame encode(Class<?> identifier, PacketContext context) {
         return get(identifier).encode(context);
     }
 

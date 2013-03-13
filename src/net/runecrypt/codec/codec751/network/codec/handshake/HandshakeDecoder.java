@@ -18,7 +18,6 @@ package net.runecrypt.codec.codec751.network.codec.handshake;
 
 import net.runecrypt.codec.CodecManifest;
 import net.runecrypt.codec.codec751.network.codec.login.LoginDecoder;
-import net.runecrypt.codec.codec751.network.codec.login.LoginEncoder;
 import net.runecrypt.codec.codec751.network.codec.ondemand.UpdateDecoder;
 import net.runecrypt.codec.codec751.network.codec.ondemand.UpdateEncoder;
 import net.runecrypt.codec.codec751.network.codec.ondemand.XorEncoder;
@@ -38,7 +37,6 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
  */
 public class HandshakeDecoder extends FrameDecoder {
 
-    @SuppressWarnings("unused")
     private final CodecManifest codecManifest;
 
     /**
@@ -58,7 +56,6 @@ public class HandshakeDecoder extends FrameDecoder {
         switch (handshakeType.getType()) {
             case HANDSHAKE_LOGIN:
                 channel.write(validateResponse());
-                channel.getPipeline().addLast("loginEncoder", new LoginEncoder());
                 channel.getPipeline().addBefore("upHandler", "loginDecoder", new LoginDecoder(codecManifest));
                 break;
             case HANDSHAKE_ONDEMAND:

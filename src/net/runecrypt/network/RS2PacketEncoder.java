@@ -1,7 +1,8 @@
 package net.runecrypt.network;
 
 import net.burtleburtle.bob.rand.IsaacRandom;
-import org.jboss.netty.buffer.ChannelBuffer;
+import net.runecrypt.util.BufferUtils;
+
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -16,7 +17,8 @@ import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
  */
 public class RS2PacketEncoder extends OneToOneEncoder {
 
-    private final IsaacRandom encodingRandom;
+    @SuppressWarnings("unused")
+	private final IsaacRandom encodingRandom;
     private int currentProtocol;
 
     /**
@@ -32,41 +34,53 @@ public class RS2PacketEncoder extends OneToOneEncoder {
 
     @Override
     protected Object encode(ChannelHandlerContext ctx, Channel channel, Object message) throws Exception {
-        if (message instanceof Packet) {
-            Packet buf = (Packet) message;
-            if (buf.isHeaderless()) {
-                return buf.getPayload();
-            } else {
-                int opcode = buf.getOpcode();
-                Packet.PacketType type = buf.getType();
-                int length = buf.getLength();
-                int finalLength = length + 2 + type.getValue();
-                ChannelBuffer buffer = ChannelBuffers.buffer(finalLength);
-                if (currentProtocol >= 637) {
-                    if (opcode < 128) {
-                        buffer.writeByte((opcode + encodingRandom.nextInt()) & 0xFF);
-                    } else {
-                        int low = (opcode & 0xFF);
-                        int high = (opcode >> 8) & 0xFF;
-                        buffer.writeByte((high + 128) + encodingRandom.nextInt());
-                        buffer.writeByte((low + encodingRandom.nextInt()) & 0xFF);
-                    }
-                } else
-                    buffer.writeByte((opcode + encodingRandom.nextInt()) & 0xFF);
-                switch (type) {
-                    case BYTE:
-                        buffer.writeByte(length);
-                        break;
-                    case SHORT:
-                        buffer.writeShort(length);
-                        break;
-                    default:
-                        break;
-                }
-                buffer.writeBytes(buf.getPayload());
-                return buffer;
-            }
-
+    	Frame frame = (Frame)message;
+    	
+    	int opcode = frame.getOpcode();
+    	
+    	byte[] buffer = frame.getFrameBuffer();
+    	if (frame.getWritePos() < buffer.length || frame.getWritePos() == 0) {
+    		int headerLength = 0;
+    		
+    		if (opcode >= 0) {
+    			headerLength++;
+    			if (frame.getLength() < 0 && frame.getLength() != -3) {
+    				headerLength += -(frame.getLength());
+    			}
+    			
+    			if (currentProtocol == 751) {
+    				if (opcode >= 128) {
+    					headerLength++;
+    				}
+    			}
+    		}
+    		
+    		byte[] newBuffer = new byte[headerLength + frame.getWritePos()];
+    		
+    		if (opcode >= 0) {
+    			int pos = 0;
+    			if (currentProtocol == 751) {
+    				if (opcode >= 128) {
+    					BufferUtils.writeByte(128, pos++, newBuffer);
+    				}
+    			}
+    			
+    			BufferUtils.writeByte(opcode, pos++, newBuffer);
+    			if (frame.getLength() < 0) {
+    				switch (frame.getLength()) {
+    				case Frame.BYTE:
+    					BufferUtils.writeByte(frame.getWritePos(), pos, newBuffer);
+    					break;
+    					
+    				case Frame.SHORT:
+    					BufferUtils.writeShort(frame.getWritePos(), pos, newBuffer);
+    					break;
+    				}
+    			}
+    		}
+    		
+    		System.arraycopy(buffer, 0, newBuffer, headerLength, frame.getWritePos());
+    		return ChannelBuffers.wrappedBuffer(newBuffer);
         } else
             return message;
     }

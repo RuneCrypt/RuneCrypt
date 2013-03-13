@@ -1,7 +1,7 @@
 package net.runecrypt.codec.codec751.decoders;
 
 import net.runecrypt.codec.codec751.context.WorldListContext;
-import net.runecrypt.network.PacketReader;
+import net.runecrypt.network.FrameReader;
 import net.runecrypt.network.packet.PacketDecoder;
 
 /**
@@ -14,7 +14,7 @@ import net.runecrypt.network.packet.PacketDecoder;
 public class WorldListDecoder implements PacketDecoder<WorldListContext> {
 
     @Override
-    public WorldListContext decode(PacketReader packet) {
-        return new WorldListContext(packet.getInt());
+    public WorldListContext decode(FrameReader packet) {
+        return new WorldListContext(packet.readInt());
     }
 }

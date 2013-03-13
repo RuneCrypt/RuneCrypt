@@ -12,10 +12,8 @@ import net.runecrypt.game.model.player.Player;
 public final class World {
 
     public static enum LoginType {WORLD, LOBBY}
-
-    ;
     private static World instance = new World();
-    private Player[] players = new Player[0x9c4];
+    public Player[] players = new Player[0x9c4];
     private Player[] lobbyPlayers = new Player[0x9c4];
 
     /**
@@ -26,7 +24,10 @@ public final class World {
      */
     public boolean register(Player player, LoginType loginType) {
         Player[] loginPlayers = loginType == LoginType.WORLD ? players : lobbyPlayers;
-        for (int i = 0; i < loginPlayers.length; i++) {
+        for (int i = 1; i < loginPlayers.length; i++) {
+            if (loginType.equals(LoginType.WORLD) && lobbyPlayers[player.getIndex()] != null) {
+                unregister(player, LoginType.LOBBY);
+            }
             if (loginPlayers[i] == null) {
                 loginPlayers[i] = player;
                 player.setIndex(i);
@@ -58,7 +59,7 @@ public final class World {
      * @return The {@code Player} or {@code Null} if the player doesn't exsist.
      */
     public Player getPlayer(String username) {
-        for (int i = 0; i < players.length; i++) {
+        for (int i = 1; i < players.length; i++) {
             if (players[i] == null)
                 continue;
 

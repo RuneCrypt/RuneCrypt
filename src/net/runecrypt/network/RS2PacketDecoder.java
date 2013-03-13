@@ -2,12 +2,12 @@ package net.runecrypt.network;
 
 import net.burtleburtle.bob.rand.IsaacRandom;
 import net.runecrypt.codec.Codec;
+import net.runecrypt.codec.codec751.Codec751;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
-
-import static org.jboss.netty.buffer.ChannelBuffers.dynamicBuffer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +28,7 @@ public class RS2PacketDecoder extends ReplayingDecoder<RS2PacketDecoder.RS2Packe
      * Constructs a new {@code RS2PacketDecoder} instance.
      *
      * @param decodingRandom The decoding random instance.
+     * @param currentProtocol The current protocol of the server.
      */
     public RS2PacketDecoder(IsaacRandom decodingRandom, Codec codec) {
         super(RS2PacketDecoderState.OPCODE_READ);
@@ -41,25 +42,34 @@ public class RS2PacketDecoder extends ReplayingDecoder<RS2PacketDecoder.RS2Packe
             switch (state) {
                 case OPCODE_READ:
                     if (in.readableBytes() >= 1) {
-                        opcode = in.readByte() - decodingRandom.nextInt() & 0xFF;
+                    	boolean isaacDisabled = false;
+                    	if (codec instanceof Codec751)
+                    		isaacDisabled = true;
+
+                    	opcode = isaacDisabled ? in.readByte() & 0xFF : in.readByte() - decodingRandom.nextInt() & 0xFF;
                         checkpoint(RS2PacketDecoderState.OPCODE_SIZE);
                     }
                     break;
                 case OPCODE_SIZE:
                     if (in.readableBytes() >= 1) {
                         size = codec.getPacketLengths()[opcode];
-                        if (size == -1) {
-                            size = in.readByte() & 0xFF;
+                        switch (size) {
+                        case Frame.BYTE:
+                        	size = in.readByte() & 0xFF;
+                        	break;
+                        case Frame.SHORT:
+                        	size = in.readShort() & 0xFFFF;
+                        	break;
                         }
                         checkpoint(RS2PacketDecoderState.FINALIZE);
                     }
                     break;
                 case FINALIZE:
                     if (in.readableBytes() >= size) {
-                        ChannelBuffer payload = dynamicBuffer();
-                        payload.writeBytes(in.readBytes(size));
+                        byte[] frameBuffer = new byte[size];
+                        in.readBytes(frameBuffer);
                         checkpoint(RS2PacketDecoderState.OPCODE_READ);
-                        return new Packet(opcode, Packet.PacketType.FIXED, payload);
+                        return new Frame(opcode, frameBuffer);
                     }
                     break;
             }

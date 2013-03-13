@@ -13,7 +13,6 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.math.BigInteger;
 import java.net.ProtocolException;
@@ -55,12 +54,12 @@ public class LoginDecoder extends FrameDecoder {
             case LOBBY_PAYLOAD:
                 return decodeLobbyPayload(buffer);
             case GAME_PAYLOAD:
-                break;
+                return decodeGamePayload(buffer);
         }
         return null;
     }
-
-    /**
+    
+	/**
      * Decodes the lobby payload of the login procedure.
      *
      * @param buffer The buffer for reading data.
@@ -68,11 +67,11 @@ public class LoginDecoder extends FrameDecoder {
      */
     private Object decodeLobbyPayload(ChannelBuffer buffer) throws ProtocolException {
         if (!(buffer.readableBytes() >= 2))
-            throw new InvalidStateException("Not enough readable bytes from buffer.");
+            throw new IllegalStateException("Not enough readable bytes from buffer.");
 
         int secureBufferSize = buffer.readShort() & 0xFFFF;
         if (!(buffer.readableBytes() >= secureBufferSize))
-            throw new InvalidStateException("Not enough readable bytes from buffer.");
+            throw new IllegalStateException("Not enough readable bytes from buffer.");
 
         byte[] secureBytes = new byte[secureBufferSize];
         buffer.readBytes(secureBytes);
@@ -103,13 +102,15 @@ public class LoginDecoder extends FrameDecoder {
         boolean decodeAsString = xteaBuffer.readByte() == 1;
         String username = decodeAsString ? BufferUtils.readJagexString(xteaBuffer) : Base37Utils.decodeBase37(xteaBuffer.readLong());
 
-        int displayMode = xteaBuffer.readByte() & 0xFF;
+        @SuppressWarnings("unused")
+		int displayMode = xteaBuffer.readByte() & 0xFF;
         xteaBuffer.readByte();
 
         byte[] randomData = new byte[24];
         for (int i = 0 ; i < randomData.length; i++)
             randomData[i] = (byte) (xteaBuffer.readByte() & 0xFF);
 
+        @SuppressWarnings("unused")
         String clientSettings = BufferUtils.readJagexString(xteaBuffer);
         int indexFiles = xteaBuffer.readByte() & 0xFF;
 
@@ -130,6 +131,79 @@ public class LoginDecoder extends FrameDecoder {
         return new LoginRequest(playerDef, decodingRandom, encodingRandom, codecManifest, World.LoginType.LOBBY);
     }
 
+
+	/**
+     * Decodes the game payload of the login procedure.
+     *
+     * @param buffer The buffer for reading data.
+     * @return The frame or {@code Null}.
+     */
+    private Object decodeGamePayload(ChannelBuffer buffer) throws ProtocolException {
+        if (!(buffer.readableBytes() >= 2))
+            throw new IllegalStateException("Not enough readable bytes from buffer.");
+
+        int secureBufferSize = buffer.readShort() & 0xFFFF;
+        if (!(buffer.readableBytes() >= secureBufferSize))
+            throw new IllegalStateException("Not enough readable bytes from buffer.");
+
+        byte[] secureBytes = new byte[secureBufferSize];
+        buffer.readBytes(secureBytes);
+        ChannelBuffer secureBuffer = ChannelBuffers.wrappedBuffer(new BigInteger(secureBytes).modPow(PRIVATE_KEY, MODULUS_KEY).toByteArray());
+
+        int blockOpcode = secureBuffer.readByte() & 0xFF;
+        if (blockOpcode != 10)
+            throw new ProtocolException("Invalid block opcode: " + blockOpcode);
+
+        int[] xteaKey = new int[4];
+        for (int i = 0; i < xteaKey.length; i++)
+            xteaKey[i] = secureBuffer.readInt();
+
+        long loginHash = secureBuffer.readLong();
+        if (loginHash != 0)
+            throw new ProtocolException("Invalid login hash: " + loginHash);
+
+        String password = BufferUtils.readJagexString(secureBuffer);
+
+        long[] loginSeeds = new long[2];
+        for (int i = 0; i < loginSeeds.length; i++)
+            loginSeeds[i] = secureBuffer.readLong();
+
+        byte[] xteaBlock = new byte[buffer.readableBytes()];
+        buffer.readBytes(xteaBlock);
+        ChannelBuffer xteaBuffer = ChannelBuffers.wrappedBuffer(XTEA.decipher(xteaKey, xteaBlock));
+
+        boolean decodeAsString = xteaBuffer.readByte() == 1;
+        String username = decodeAsString ? BufferUtils.readJagexString(xteaBuffer) : Base37Utils.decodeBase37(xteaBuffer.readLong());
+
+        @SuppressWarnings("unused")
+		int displayMode = xteaBuffer.readByte() & 0xFF;
+        xteaBuffer.readByte();
+        
+        xteaBuffer.readShort();
+        xteaBuffer.readShort();
+
+        byte[] randomData = new byte[24];
+        for (int i = 0 ; i < randomData.length; i++)
+            randomData[i] = (byte) (xteaBuffer.readByte() & 0xFF);
+
+        @SuppressWarnings("unused")
+        String clientSettings = BufferUtils.readJagexString(xteaBuffer);
+       
+        xteaBuffer.readInt();
+        xteaBuffer.skipBytes(xteaBuffer.readByte() & 0xFF);
+
+        int[] serverKeys = new int[xteaKey.length];
+        for (int i = 0; i < serverKeys.length; i++)
+            serverKeys[i] = xteaKey[i] + 50;
+
+        int[] clientKeys = xteaKey;
+        IsaacRandom encodingRandom = new IsaacRandom(serverKeys);
+        IsaacRandom decodingRandom = new IsaacRandom(clientKeys);
+
+        PlayerDef playerDef = new PlayerDef(username.trim(), password.trim(), PlayerDef.Rights.STANDARD);
+        return new LoginRequest(playerDef, decodingRandom, encodingRandom, codecManifest, World.LoginType.WORLD);
+	}
+
     /**
      * Decodes the client details of the login procedure.
      * @param buffer The buffer for reading data.
@@ -137,7 +211,7 @@ public class LoginDecoder extends FrameDecoder {
      */
     private Object decodeClientDetails(ChannelBuffer buffer) {
         if (!(buffer.readableBytes() >= loginSize))
-            throw new InvalidStateException("Not enough readable bytes from buffer!");
+            throw new IllegalStateException("Not enough readable bytes from buffer!");
 
         int version = buffer.readInt();
         int subVersion = buffer.readInt();
@@ -161,7 +235,7 @@ public class LoginDecoder extends FrameDecoder {
      */
     private Object decodeConnectionType(ChannelBuffer buffer) throws ProtocolException {
         if (!buffer.readable())
-            throw new InvalidStateException("Not enough readable bytes from buffer!");
+            throw new IllegalStateException("Not enough readable bytes from buffer!");
 
         int loginType = buffer.readByte() & 0xFF;
         if (loginType != 16 && loginType != 19 && loginType != 18)
