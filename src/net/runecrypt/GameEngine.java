@@ -17,9 +17,11 @@ public class GameEngine {
 
     private static GameEngine instance = new GameEngine();
     public PacketCodec packetCodec;
+
     {
         packetCodec = new PacketCodec();
     }
+
     private List<World> worlds = new LinkedList<>();
 
     public GameEngine() {
@@ -38,6 +40,7 @@ public class GameEngine {
 
     /**
      * Gets the current worlds.
+     *
      * @return The worlds.
      */
     public List<World> getWorlds() {

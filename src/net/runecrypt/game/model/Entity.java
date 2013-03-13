@@ -30,12 +30,12 @@ public class Entity {
         this.index = index;
     }
 
-	/**
-	 * Gets the position
-	 * 
-	 * @return the position
-	 */
-	public Position getPosition() {
-		return position;
-	}
+    /**
+     * Gets the position
+     *
+     * @return the position
+     */
+    public Position getPosition() {
+        return position;
+    }
 }

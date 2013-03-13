@@ -14,19 +14,19 @@ import net.runecrypt.network.packet.PacketEncoder;
  */
 public class GameInterface implements PacketEncoder<GameInterfaceContext> {
 
-	@Override
-	public Frame encode(GameInterfaceContext context) {
-		int[] interfaceKeys = new int[] { 0, 0, 0, 0 };
-		
-		FrameBuffer buffer = new FrameBuffer(new Frame(38, 23));
-		
-		buffer.writeLEInt(interfaceKeys[1]);
-		buffer.writeByteS(context.walkable ? 1 : 0);
-		buffer.writeLEShortA(context.interfaceId);
-		buffer.writeLEInt(interfaceKeys[0]);
-		buffer.writeInt1(interfaceKeys[3]);
-		buffer.writeInt2(interfaceKeys[2]);
-		buffer.writeInt2(context.windowId << 16 | context.windowLocation);
-		return buffer.getFrame();
-	}
+    @Override
+    public Frame encode(GameInterfaceContext context) {
+        int[] interfaceKeys = new int[]{0, 0, 0, 0};
+
+        FrameBuffer buffer = new FrameBuffer(new Frame(38, 23));
+
+        buffer.writeLEInt(interfaceKeys[1]);
+        buffer.writeByteS(context.walkable ? 1 : 0);
+        buffer.writeLEShortA(context.interfaceId);
+        buffer.writeLEInt(interfaceKeys[0]);
+        buffer.writeInt1(interfaceKeys[3]);
+        buffer.writeInt2(interfaceKeys[2]);
+        buffer.writeInt2(context.windowId << 16 | context.windowLocation);
+        return buffer.getFrame();
+    }
 }

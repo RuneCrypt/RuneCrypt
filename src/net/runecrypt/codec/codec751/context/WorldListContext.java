@@ -18,6 +18,7 @@ public class WorldListContext implements PacketContext {
 
     /**
      * Creates a new WorldListContext.
+     *
      * @param updateType The update type.
      */
     public WorldListContext(int updateType) {
@@ -26,6 +27,7 @@ public class WorldListContext implements PacketContext {
 
     /**
      * Gets the update type.
+     *
      * @return the updateType.
      */
     public int getUpdateType() {

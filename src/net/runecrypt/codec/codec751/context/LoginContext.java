@@ -11,15 +11,15 @@ import net.runecrypt.network.packet.PacketContext;
  * To change this template use File | Settings | File Templates.
  */
 public class LoginContext implements PacketContext {
-	
-	public LoginResponse response;
 
-	/**
-	 * Constructs a new {@code LoginContext} instance.
-	 * 
-	 * @param response The response for the login.
-	 */
-	public LoginContext(LoginResponse response) {
-		this.response = response;
-	}
+    public LoginResponse response;
+
+    /**
+     * Constructs a new {@code LoginContext} instance.
+     *
+     * @param response The response for the login.
+     */
+    public LoginContext(LoginResponse response) {
+        this.response = response;
+    }
 }

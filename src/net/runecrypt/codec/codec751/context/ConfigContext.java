@@ -12,15 +12,15 @@ import net.runecrypt.network.packet.PacketContext;
 public class ConfigContext implements PacketContext {
 
     public int id, value;
-	public boolean csConfig;
+    public boolean csConfig;
 
-	/**
-	 * Constructs a new {@code Config} instance.
-	 * 
-	 * @param id The ID of the config.
-	 * @param value The value of the config.
-	 * @param csConfig A flag to indicate if it is a CS config.
-	 */
+    /**
+     * Constructs a new {@code Config} instance.
+     *
+     * @param id       The ID of the config.
+     * @param value    The value of the config.
+     * @param csConfig A flag to indicate if it is a CS config.
+     */
     public ConfigContext(int id, int value, boolean csConfig) {
         this.id = id;
         this.value = value;

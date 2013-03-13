@@ -23,9 +23,9 @@ public final class LoginResponse {
      * @param player     The player for the login response.
      * @param loginType  The login type for the request.
      */
-	public LoginResponse(int returnCode, Player player, LoginType loginType) {
-		this.player = player;
-		this.returnCode = returnCode;
-		this.loginType = loginType;
-	}
+    public LoginResponse(int returnCode, Player player, LoginType loginType) {
+        this.player = player;
+        this.returnCode = returnCode;
+        this.loginType = loginType;
+    }
 }

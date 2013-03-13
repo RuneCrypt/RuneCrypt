@@ -102,7 +102,7 @@ public class Archive {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream os = new DataOutputStream(bout);
         try {
-			/* add the data for each entry */
+            /* add the data for each entry */
             for (int id = 0; id < entries.length; id++) {
 				/* copy to temp buffer */
                 byte[] temp = new byte[entries[id].limit()];

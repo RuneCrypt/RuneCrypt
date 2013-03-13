@@ -112,7 +112,7 @@ public final class Sprite {
                         }
                     }
                 }
-	
+
 				/* read the alpha (if there is alpha) and convert values to ARGB */
                 if ((flags & FLAG_ALPHA) != 0) {
                     if ((flags & FLAG_VERTICAL) != 0) {

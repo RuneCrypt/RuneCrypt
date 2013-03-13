@@ -37,6 +37,7 @@ public class WorldListUpdateContext implements PacketContext {
 
     /**
      * Creates a new WorldListUpdate context.
+     *
      * @param skipUpdate Skips the update.
      * @param fullUpdate Updates the worldlist fully.
      */
@@ -47,6 +48,7 @@ public class WorldListUpdateContext implements PacketContext {
 
     /**
      * is there a full update required.
+     *
      * @return the fullUpdate.
      */
     public boolean isFullUpdate() {
@@ -55,6 +57,7 @@ public class WorldListUpdateContext implements PacketContext {
 
     /**
      * Skip the world list update.
+     *
      * @return the skipUpdate
      */
     public boolean skipUpdate() {

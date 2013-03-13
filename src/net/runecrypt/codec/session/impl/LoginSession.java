@@ -62,9 +62,9 @@ public class LoginSession extends Session {
 
             channel.getPipeline().addAfter("packetEncoder", "packetDecoder", new RS2PacketDecoder(loginRequest.getDecodingRandom(), codec));
         }
-        
+
         LoginResponse loginResponse = new LoginResponse(returnCode, player, loginRequest.getLoginType());
-        
+
         ChannelFuture future = player.encode(LoginResponseEncoder.class, new LoginContext(loginResponse));
         disconnected();
 

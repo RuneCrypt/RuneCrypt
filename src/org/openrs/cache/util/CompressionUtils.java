@@ -119,7 +119,7 @@ public final class CompressionUtils {
      * @throws IOException if an I/O error occurs.
      */
     public static byte[] gzip(byte[] bytes) throws IOException {
-		/* create the streams */
+        /* create the streams */
         InputStream is = new ByteArrayInputStream(bytes);
         try {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();

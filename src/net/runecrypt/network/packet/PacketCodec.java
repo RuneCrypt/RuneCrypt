@@ -1,9 +1,9 @@
 package net.runecrypt.network.packet;
 
+import net.runecrypt.network.Frame;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import net.runecrypt.network.Frame;
 
 /**
  * @author Sean

@@ -12,6 +12,7 @@ import net.runecrypt.game.model.player.Player;
 public final class World {
 
     public static enum LoginType {WORLD, LOBBY}
+
     private static World instance = new World();
     public Player[] players = new Player[0x9c4];
     private Player[] lobbyPlayers = new Player[0x9c4];

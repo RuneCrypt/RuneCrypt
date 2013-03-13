@@ -130,7 +130,7 @@ public class Server {
                 Container container = new Container(Container.COMPRESSION_NONE, server.cache.createChecksumTable().encode(true, MODULUS_KEY, PRIVATE_KEY));
                 server.checksumTable = container.encode();
                 server.executor.execute(server.updateService);
-                
+
                 BinaryLandscapeHandler.loadLandscapes();
             } catch (IOException e) {
                 e.printStackTrace();

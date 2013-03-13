@@ -122,12 +122,12 @@ public final class BufferUtils {
         buffer.writeByte(0);
     }
 
-	public static void writeByte(int val, int index, byte[] buffer) {
-		buffer[index++] = (byte) val;		
-	}
-	
-	public static void writeShort(int val, int index, byte[] buffer) {
-		buffer[index++] = (byte) (val >> 8);
-		buffer[index++] = (byte) val;
-	}
+    public static void writeByte(int val, int index, byte[] buffer) {
+        buffer[index++] = (byte) val;
+    }
+
+    public static void writeShort(int val, int index, byte[] buffer) {
+        buffer[index++] = (byte) (val >> 8);
+        buffer[index++] = (byte) val;
+    }
 }

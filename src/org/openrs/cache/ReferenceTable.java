@@ -386,7 +386,7 @@ public class ReferenceTable {
      */
     public ByteBuffer encode() throws IOException {
         /*
-		 * we can't (easily) predict the size ahead of time, so we write to a
+         * we can't (easily) predict the size ahead of time, so we write to a
 		 * stream and then to the buffer
 		 */
         ByteArrayOutputStream bout = new ByteArrayOutputStream();

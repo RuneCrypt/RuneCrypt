@@ -5,18 +5,12 @@ import net.runecrypt.codec.Codec;
 import net.runecrypt.codec.CodecManifest;
 import net.runecrypt.codec.codec751.decoders.DisplayModeDecoder;
 import net.runecrypt.codec.codec751.decoders.WorldListDecoder;
-import net.runecrypt.codec.codec751.encoders.Config751;
-import net.runecrypt.codec.codec751.encoders.GameInterface;
-import net.runecrypt.codec.codec751.encoders.KeepAlive;
-import net.runecrypt.codec.codec751.encoders.LoginResponseEncoder;
-import net.runecrypt.codec.codec751.encoders.MainInterface;
-import net.runecrypt.codec.codec751.encoders.MapRegionUpdate;
-import net.runecrypt.codec.codec751.encoders.WorldList;
+import net.runecrypt.codec.codec751.encoders.*;
 import net.runecrypt.codec.codec751.handlers.DisplayModeHandler;
 import net.runecrypt.codec.codec751.handlers.KeepAliveHandler;
 import net.runecrypt.codec.codec751.handlers.WorldListHandler;
 
-import static net.runecrypt.GameEngine.*;
+import static net.runecrypt.GameEngine.getInstance;
 
 /**
  * Created with IntelliJ IDEA.
@@ -158,7 +152,7 @@ public class Codec751 extends Codec {
     @Override
     public void setOutgoingPackets() {
         try {
-        	getInstance().packetCodec.register(Config751.class);
+            getInstance().packetCodec.register(Config751.class);
             getInstance().packetCodec.register(WorldList.class);
             getInstance().packetCodec.register(KeepAlive.class);
             getInstance().packetCodec.register(MapRegionUpdate.class);
@@ -173,9 +167,9 @@ public class Codec751 extends Codec {
     @Override
     public void setIncommingPackets() {
         try {
-        	getInstance().packetCodec.register(103, new WorldListDecoder(), new WorldListHandler());
-           	getInstance().packetCodec.register(9, new KeepAliveHandler());
-           	getInstance().packetCodec.register(84, new DisplayModeDecoder(), new DisplayModeHandler());
+            getInstance().packetCodec.register(103, new WorldListDecoder(), new WorldListHandler());
+            getInstance().packetCodec.register(9, new KeepAliveHandler());
+            getInstance().packetCodec.register(84, new DisplayModeDecoder(), new DisplayModeHandler());
         } catch (Exception e) {
             e.printStackTrace();
         }

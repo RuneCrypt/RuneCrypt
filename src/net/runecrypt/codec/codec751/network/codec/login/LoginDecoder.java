@@ -26,8 +26,10 @@ import java.net.ProtocolException;
  */
 public class LoginDecoder extends FrameDecoder {
 
-    public enum Stage { CONNECTION_TYPE, CLIENT_DETAILS, LOBBY_PAYLOAD, GAME_PAYLOAD; }
-    public enum LoginTypes { LOBBY, WORLD; }
+    public enum Stage {CONNECTION_TYPE, CLIENT_DETAILS, LOBBY_PAYLOAD, GAME_PAYLOAD;}
+
+    public enum LoginTypes {LOBBY, WORLD;}
+
     private Stage loginStage = Stage.CONNECTION_TYPE;
     private LoginTypes currentLoginType;
     private int loginSize;
@@ -58,8 +60,8 @@ public class LoginDecoder extends FrameDecoder {
         }
         return null;
     }
-    
-	/**
+
+    /**
      * Decodes the lobby payload of the login procedure.
      *
      * @param buffer The buffer for reading data.
@@ -103,11 +105,11 @@ public class LoginDecoder extends FrameDecoder {
         String username = decodeAsString ? BufferUtils.readJagexString(xteaBuffer) : Base37Utils.decodeBase37(xteaBuffer.readLong());
 
         @SuppressWarnings("unused")
-		int displayMode = xteaBuffer.readByte() & 0xFF;
+        int displayMode = xteaBuffer.readByte() & 0xFF;
         xteaBuffer.readByte();
 
         byte[] randomData = new byte[24];
-        for (int i = 0 ; i < randomData.length; i++)
+        for (int i = 0; i < randomData.length; i++)
             randomData[i] = (byte) (xteaBuffer.readByte() & 0xFF);
 
         @SuppressWarnings("unused")
@@ -132,7 +134,7 @@ public class LoginDecoder extends FrameDecoder {
     }
 
 
-	/**
+    /**
      * Decodes the game payload of the login procedure.
      *
      * @param buffer The buffer for reading data.
@@ -176,19 +178,19 @@ public class LoginDecoder extends FrameDecoder {
         String username = decodeAsString ? BufferUtils.readJagexString(xteaBuffer) : Base37Utils.decodeBase37(xteaBuffer.readLong());
 
         @SuppressWarnings("unused")
-		int displayMode = xteaBuffer.readByte() & 0xFF;
+        int displayMode = xteaBuffer.readByte() & 0xFF;
         xteaBuffer.readByte();
-        
+
         xteaBuffer.readShort();
         xteaBuffer.readShort();
 
         byte[] randomData = new byte[24];
-        for (int i = 0 ; i < randomData.length; i++)
+        for (int i = 0; i < randomData.length; i++)
             randomData[i] = (byte) (xteaBuffer.readByte() & 0xFF);
 
         @SuppressWarnings("unused")
         String clientSettings = BufferUtils.readJagexString(xteaBuffer);
-       
+
         xteaBuffer.readInt();
         xteaBuffer.skipBytes(xteaBuffer.readByte() & 0xFF);
 
@@ -202,10 +204,11 @@ public class LoginDecoder extends FrameDecoder {
 
         PlayerDef playerDef = new PlayerDef(username.trim(), password.trim(), PlayerDef.Rights.STANDARD);
         return new LoginRequest(playerDef, decodingRandom, encodingRandom, codecManifest, World.LoginType.WORLD);
-	}
+    }
 
     /**
      * Decodes the client details of the login procedure.
+     *
      * @param buffer The buffer for reading data.
      * @return The frame or {@code Null}.
      */
@@ -230,6 +233,7 @@ public class LoginDecoder extends FrameDecoder {
 
     /**
      * Decodes the connection type of the login procedure.
+     *
      * @param buffer The buffer for reading data.
      * @return The frame or {@code Null}.
      */

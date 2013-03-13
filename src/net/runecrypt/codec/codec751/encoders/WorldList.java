@@ -31,14 +31,14 @@ public class WorldList implements PacketEncoder<WorldListUpdateContext> {
 
         builder.writeByte(skipUpdate ? 0 : 1);
 
-        if(!skipUpdate) {
-			/*
+        if (!skipUpdate) {
+            /*
 			 * The main block of the world list
 			 */
             builder.writeByte(2);
 
             builder.writeByte(fullUpdate ? 1 : 0);
-            if(fullUpdate) {
+            if (fullUpdate) {
                 builder.writeSmart(size);
                 for (World w : worlds) {
                     builder.writeSmart(w.getCountry());
@@ -62,8 +62,8 @@ public class WorldList implements PacketEncoder<WorldListUpdateContext> {
 			 */
             int playersAmount = 0;
             for (int i = 1; i < 2048; i++) {
-            	if (net.runecrypt.game.World.getInstance().players[i] != null)
-            		playersAmount += 1;
+                if (net.runecrypt.game.World.getInstance().players[i] != null)
+                    playersAmount += 1;
             }
             for (World w : worlds) {
                 builder.writeSmart(w.getWorldId());

@@ -14,38 +14,38 @@ import net.runecrypt.util.BinaryLandscapeHandler;
  */
 public class MapRegionContext implements PacketContext {
 
-	public static final int[] REGION_SIZE = new int[] { 104, 120, 136, 168 };
-	public int regionX = -1;
-	public int regionY = -1;
-	public int regionSizeIndex = 0;
-	public int[][] keys = null;
-	public int keyCount = 0;
-	public boolean sendGPI = false;
-	public RenderInformation renderInformation;
+    public static final int[] REGION_SIZE = new int[]{104, 120, 136, 168};
+    public int regionX = -1;
+    public int regionY = -1;
+    public int regionSizeIndex = 0;
+    public int[][] keys = null;
+    public int keyCount = 0;
+    public boolean sendGPI = false;
+    public RenderInformation renderInformation;
 
-	public MapRegionContext(Player player, boolean onLogin) {
-		this.regionX = player.getPosition().getRegionX();
-		this.regionY = player.getPosition().getRegionY();
-		
-		this.regionSizeIndex = 0;
-		this.keys = new int[16][];
-		
-		int depth = REGION_SIZE[regionSizeIndex] >> 4;
-		for (int xCalc = (regionX - depth) >> 3; xCalc <= (regionX + depth) >> 3; xCalc++) {
-			for (int yCalc = (regionY - depth) >> 3; yCalc <= (regionY + depth) >> 3; yCalc++) {
-				int region = yCalc + (xCalc << 8);
+    public MapRegionContext(Player player, boolean onLogin) {
+        this.regionX = player.getPosition().getRegionX();
+        this.regionY = player.getPosition().getRegionY();
 
-				int[] xteaKey = BinaryLandscapeHandler.get(region);
-				if (xteaKey == null)
-					xteaKey = new int[4];
-				
-				keys[keyCount++] = xteaKey;
-			}
-		}
-		
-		if (onLogin)
-			sendGPI = true;
-		
-		this.renderInformation = player.renderInformation;
-	}
+        this.regionSizeIndex = 0;
+        this.keys = new int[16][];
+
+        int depth = REGION_SIZE[regionSizeIndex] >> 4;
+        for (int xCalc = (regionX - depth) >> 3; xCalc <= (regionX + depth) >> 3; xCalc++) {
+            for (int yCalc = (regionY - depth) >> 3; yCalc <= (regionY + depth) >> 3; yCalc++) {
+                int region = yCalc + (xCalc << 8);
+
+                int[] xteaKey = BinaryLandscapeHandler.get(region);
+                if (xteaKey == null)
+                    xteaKey = new int[4];
+
+                keys[keyCount++] = xteaKey;
+            }
+        }
+
+        if (onLogin)
+            sendGPI = true;
+
+        this.renderInformation = player.renderInformation;
+    }
 }

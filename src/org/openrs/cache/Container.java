@@ -164,7 +164,7 @@ public final class Container {
 		/* write the header, with the optional uncompressed length */
         buf.put((byte) type);
         buf.putInt(compressed.length);
-		
+
 		/* write the compressed length */
         if (type != COMPRESSION_NONE) {
             buf.putInt(data.limit());

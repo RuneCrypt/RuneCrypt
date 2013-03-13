@@ -40,7 +40,7 @@ public final class GameSession extends Session {
 
     @Override
     public void message(Object obj) {
-    	Frame gamePacket = (Frame) obj;
+        Frame gamePacket = (Frame) obj;
         PacketAssembler assembler = GameEngine.getInstance().packetCodec.get(gamePacket.getOpcode());
         if (assembler != null) {
             PacketDecoder<?> decoder = assembler.getDecoder();

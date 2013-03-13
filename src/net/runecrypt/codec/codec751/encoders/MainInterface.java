@@ -14,10 +14,10 @@ import net.runecrypt.network.packet.PacketEncoder;
  */
 public class MainInterface implements PacketEncoder<MainInterfaceContext> {
 
-	@Override
-	public Frame encode(MainInterfaceContext context) {
-		int[] interfaceKeys = new int[] { 0, 0, 0, 0 };
-		FrameBuffer buffer = new FrameBuffer(new Frame(148, 19));
-		return buffer.writeInt(interfaceKeys[0]).writeInt(interfaceKeys[1]).writeShortA(context.interfaceId).writeInt2(interfaceKeys[3]).writeByteC(0).writeInt1(interfaceKeys[2]).getFrame();
-	}
+    @Override
+    public Frame encode(MainInterfaceContext context) {
+        int[] interfaceKeys = new int[]{0, 0, 0, 0};
+        FrameBuffer buffer = new FrameBuffer(new Frame(148, 19));
+        return buffer.writeInt(interfaceKeys[0]).writeInt(interfaceKeys[1]).writeShortA(context.interfaceId).writeInt2(interfaceKeys[3]).writeByteC(0).writeInt1(interfaceKeys[2]).getFrame();
+    }
 }

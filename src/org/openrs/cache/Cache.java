@@ -134,7 +134,7 @@ public final class Cache implements Closeable {
      * @throws IOException if an I/O error occurred.
      */
     public ByteBuffer read(int type, int file, int member) throws IOException {
-		/* grab the container and the reference table */
+        /* grab the container and the reference table */
         Container container = read(type, file);
         Container tableContainer = Container.decode(store.read(255, type));
         ReferenceTable table = ReferenceTable.decode(tableContainer.getData());

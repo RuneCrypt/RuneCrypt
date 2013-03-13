@@ -3,7 +3,6 @@ package net.runecrypt.network;
 import net.burtleburtle.bob.rand.IsaacRandom;
 import net.runecrypt.codec.Codec;
 import net.runecrypt.codec.codec751.Codec751;
-
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -27,7 +26,7 @@ public class RS2PacketDecoder extends ReplayingDecoder<RS2PacketDecoder.RS2Packe
     /**
      * Constructs a new {@code RS2PacketDecoder} instance.
      *
-     * @param decodingRandom The decoding random instance.
+     * @param decodingRandom  The decoding random instance.
      * @param currentProtocol The current protocol of the server.
      */
     public RS2PacketDecoder(IsaacRandom decodingRandom, Codec codec) {
@@ -42,11 +41,11 @@ public class RS2PacketDecoder extends ReplayingDecoder<RS2PacketDecoder.RS2Packe
             switch (state) {
                 case OPCODE_READ:
                     if (in.readableBytes() >= 1) {
-                    	boolean isaacDisabled = false;
-                    	if (codec instanceof Codec751)
-                    		isaacDisabled = true;
+                        boolean isaacDisabled = false;
+                        if (codec instanceof Codec751)
+                            isaacDisabled = true;
 
-                    	opcode = isaacDisabled ? in.readByte() & 0xFF : in.readByte() - decodingRandom.nextInt() & 0xFF;
+                        opcode = isaacDisabled ? in.readByte() & 0xFF : in.readByte() - decodingRandom.nextInt() & 0xFF;
                         checkpoint(RS2PacketDecoderState.OPCODE_SIZE);
                     }
                     break;
@@ -54,12 +53,12 @@ public class RS2PacketDecoder extends ReplayingDecoder<RS2PacketDecoder.RS2Packe
                     if (in.readableBytes() >= 1) {
                         size = codec.getPacketLengths()[opcode];
                         switch (size) {
-                        case Frame.BYTE:
-                        	size = in.readByte() & 0xFF;
-                        	break;
-                        case Frame.SHORT:
-                        	size = in.readShort() & 0xFFFF;
-                        	break;
+                            case Frame.BYTE:
+                                size = in.readByte() & 0xFF;
+                                break;
+                            case Frame.SHORT:
+                                size = in.readShort() & 0xFFFF;
+                                break;
                         }
                         checkpoint(RS2PacketDecoderState.FINALIZE);
                     }

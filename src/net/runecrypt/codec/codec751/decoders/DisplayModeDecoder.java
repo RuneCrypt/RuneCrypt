@@ -14,12 +14,12 @@ import net.runecrypt.network.packet.PacketDecoder;
  */
 public class DisplayModeDecoder implements PacketDecoder<DisplayModeContext> {
 
-	@Override
-	public DisplayModeContext decode(FrameReader packet) {
-		int displayMode = packet.readUnsignedByte();
-		int width = packet.readUnsignedShort();
-		int height = packet.readUnsignedShort();
-		packet.readUnsignedByte();
-		return new DisplayModeContext(DisplayModes.forId(displayMode), width, height);
-	}
+    @Override
+    public DisplayModeContext decode(FrameReader packet) {
+        int displayMode = packet.readUnsignedByte();
+        int width = packet.readUnsignedShort();
+        int height = packet.readUnsignedShort();
+        packet.readUnsignedByte();
+        return new DisplayModeContext(DisplayModes.forId(displayMode), width, height);
+    }
 }

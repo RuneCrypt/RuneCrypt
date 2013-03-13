@@ -13,12 +13,12 @@ import net.runecrypt.network.packet.PacketHandler;
  */
 public class DisplayModeHandler implements PacketHandler<DisplayModeContext> {
 
-	@Override
-	public void handle(Player player, DisplayModeContext context) {
-		player.displayMode = context.displayMode;
-		if (player.onLogin) {
-			player.performLogin();
-			player.onLogin = false;
-		}
-	}
+    @Override
+    public void handle(Player player, DisplayModeContext context) {
+        player.displayMode = context.displayMode;
+        if (player.onLogin) {
+            player.performLogin();
+            player.onLogin = false;
+        }
+    }
 }

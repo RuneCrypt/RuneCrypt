@@ -10,15 +10,15 @@ import net.runecrypt.network.packet.PacketContext;
  * To change this template use File | Settings | File Templates.
  */
 public class MainInterfaceContext implements PacketContext {
-	
-	public int interfaceId;
 
-	/**
-	 * Constructs a new {@code MainInterface} instance.
-	 * 
-	 * @param interfaceId The interface ID.
-	 */
-	public MainInterfaceContext(int interfaceId) {
-		this.interfaceId = interfaceId;
-	}
+    public int interfaceId;
+
+    /**
+     * Constructs a new {@code MainInterface} instance.
+     *
+     * @param interfaceId The interface ID.
+     */
+    public MainInterfaceContext(int interfaceId) {
+        this.interfaceId = interfaceId;
+    }
 }
